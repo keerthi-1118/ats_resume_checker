@@ -62,8 +62,8 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
-    cd YOUR_REPO_NAME
+    git clone [https://github.com/keerthi-1118/ats_resume_checker}
+    cd ats_resume_checker
     ```
 
 2.  **Backend Setup (Python/Flask):**
