@@ -163,6 +163,7 @@ Upon launching the application, you will be greeted with a choice:
 ---
 
 ## 📂 Project Structure
+```
 ats_resume_checker/
 ├── backend/                        # Flask Backend Application
 │   ├── app.py                      # Main Flask app, NLP logic, API endpoints
@@ -192,7 +193,7 @@ ats_resume_checker/
 ├── .gitignore                      # Specifies intentionally untracked files to ignore
 └── README.md                       # This file
 
-
+```
 ---
 
 ## 🤝 Contributing
