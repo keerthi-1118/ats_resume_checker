@@ -62,7 +62,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/keerthi-1118/ats_resume_checker}
+    git clone https://github.com/keerthi-1118/ats_resume_checker.git
     cd ats_resume_checker
     ```
 
@@ -204,7 +204,7 @@ Contributions are welcome! If you have suggestions for improvements or find bugs
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 
 ---
@@ -216,7 +216,7 @@ This project is licensed under the MIT License - see the `LICENSE.md` file for d
 * `Flask` for the backend framework.
 * `React.js` for the frontend library.
 * `html2pdf.js` for client-side PDF generation.
-* To my AI assistant for guiding through the development process! ;)
+* To my AI assistant for guiding through the development process! :)
 
 ---
 
