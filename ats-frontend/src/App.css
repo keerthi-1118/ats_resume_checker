@@ -1,0 +1,603 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: url('https://i.imgur.com/6Iej2c3.png') center center/cover no-repeat, linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    transition: background 0.5s;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.App.initial-screen {
+    background: url('https://i.imgur.com/6Iej2c3.png') center center/cover no-repeat, linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    background-color: #ffffff; /* Ensure white background for the card */
+}
+
+
+.dropzone {
+    border: 2px dashed #a0a0a0;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.7);
+    padding: 40px 30px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #444;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    width: 100%;
+    max-width: 500px;
+}
+.dropzone.dragover {
+    border-color: #6c63ff;
+    box-shadow: 0 6px 32px rgba(108,99,255,0.12);
+    background: #f3f0ff;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+textarea {
+    border-radius: 10px;
+    border: 1.5px solid #d1d5db;
+    padding: 12px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: border 0.2s;
+}
+
+button {
+    background: linear-gradient(90deg, #6c63ff 0%, #48c6ef 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+button:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+    background: linear-gradient(90deg, #48c6ef 0%, #6c63ff 100%);
+    box-shadow: 0 4px 16px rgba(76, 70, 255, 0.10);
+}
+
+label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .App {
+        padding: 10px;
+    }
+    textarea {
+        width: 95vw;
+        max-width: 95vw;
+    }
+    .dropzone {
+        padding: 20px;
+    }
+    button {
+        margin: 5px;
+        padding: 8px 16px;
+    }
+}
+
+/* Styles for the analysis/summary display page */
+.analyze-page-bg {
+    min-height: 100vh;
+    min-width: 100vw;
+    background: #f6f8fa; /* Light grey background for the result page */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.tabs-header {
+    display: flex;
+    width: 100%;
+    max-width: 800px; /* Match content width */
+    margin-top: 20px; /* Space from top */
+    border-top: 3px solid #222831;
+    border-bottom: none; /* No bottom border for header itself */
+    background: #f6f8fa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow */
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+    overflow: hidden; /* For border-radius on children */
+}
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 14px 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #222831;
+    background: #fcfcfc; /* Lighter background for inactive tabs */
+    cursor: pointer;
+    border-right: 1px solid #e0e3e7;
+    transition: background 0.2s, color 0.2s, font-weight 0.2s;
+    user-select: none; /* Prevent text selection */
+}
+.tab:last-child {
+    border-right: none;
+}
+.tab.active {
+    background: #e3e6ec; /* Active tab background */
+    color: #222831;
+    font-weight: 600;
+    box-shadow: inset 0 -3px 0 0 #007bff; /* Underline effect */
+}
+.tab:hover:not(.active) {
+    background: #f0f2f5;
+}
+
+.tab-content {
+    background: #ffffff; /* White background for content */
+    padding: 32px 24px;
+    min-height: 400px;
+    width: 100%;
+    max-width: 800px; /* Match header width */
+    border-radius: 0 0 8px 8px; /* Rounded bottom corners */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Deeper shadow for content */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+/* Common styling for results sections */
+.results, .results-section.resume-summary-display {
+    text-align: left; /* Align text within sections */
+}
+
+.results h3, .results-section h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.results h4, .results-section h4 {
+    color: #555;
+    margin-top: 25px;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #eee; /* Subtle separator */
+    padding-bottom: 5px;
+}
+
+.results p, .results ul {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.results ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.results li {
+    margin-bottom: 5px;
+}
+
+.error {
+    color: #dc3545; /* Bootstrap red */
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.loading-content, .error-content {
+    text-align: center;
+    color: #6c757d; /* Muted color */
+    font-size: 1.1rem;
+    margin-top: 40px;
+}
+
+/* Score Gauge Styling */
+.score-gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.score-gauge {
+    position: relative;
+    width: 180px; /* Gauge size */
+    height: 90px; /* Half circle */
+    border-radius: 180px 180px 0 0;
+    border: 10px solid #e0e0e0;
+    border-bottom: none;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    transform: none;
+}
+
+.score-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #dc3545, #ffc107, #28a745); /* Red to Yellow to Green */
+    transform-origin: center bottom;
+    transform: rotate(calc(-1deg * var(--score-percentage) * 1.8)); /* 180deg / 100 = 1.8deg per percent */
+    transition: transform 1s ease-out; /* Animation */
+    border-radius: 180px 180px 0 0;
+}
+
+.score-text {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    z-index: 2; /* Above the bar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.score-text .score-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    letter-spacing: 0.2px;
+    text-shadow: 0 2px 8px #fff, 0 0px 4px #fff, 0 0 2px #fff;
+    text-align: center;
+}
+
+.score-description {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.suggestion {
+    font-weight: 500;
+    margin-top: 8px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.suggestion.low { color: #dc3545; background-color: #f8d7da; }
+.suggestion.medium { color: #ffc107; background-color: #fff3cd; }
+.suggestion.high { color: #28a745; background-color: #d4edda; }
+
+/* Skills Comparison */
+.skills-comparison-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.skills-comparison-section .section-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.skills-columns {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.skills-column {
+    flex: 1;
+    min-width: 280px; /* Minimum width before wrapping */
+    padding: 15px;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+}
+
+.skills-column h5 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.skills-column ul {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Skills listed one by one */
+    gap: 5px; /* Space between skill items */
+}
+
+.skill-item {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent skill names from breaking */
+    transition: transform 0.2s ease-out;
+    text-align: left; /* Align text left within item */
+    display: flex; /* For icon alignment */
+    align-items: center;
+    gap: 5px; /* Space between icon and text */
+}
+
+.skill-item:hover {
+    transform: translateY(-2px);
+}
+
+.matching-skills-column h5 { color: #28a745; }
+.matching-skills-column .skill-item {
+    background-color: #e6ffe6; /* Light green */
+    border: 1px solid #28a745;
+    color: #28a745;
+}
+.icon-check { color: #28a745; font-size: 1.2em; }
+/* Add checkmark for matching skills */
+.skill-item.matching::before {
+    content: '✔'; /* Checkmark character */
+    font-size: 1em;
+    line-height: 1;
+}
+
+.missing-skills-column h5 { color: #dc3545; }
+.missing-skills-column .skill-item {
+    background-color: #ffe6e6; /* Light red */
+    border: 1px solid #dc3545;
+    color: #dc3545;
+}
+.icon-cross { color: #dc3545; font-size: 1.2em; }
+/* Add cross for missing skills */
+.skill-item.missing::before {
+    content: '✖'; /* Cross character */
+    font-size: 1em;
+    line-height: 1;
+}
+
+.analysis-detail-section {
+    margin-top: 18px;
+    border: none;
+    background: #f4f6fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(60,60,80,0.06);
+    padding: 18px 24px 14px 24px;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.analysis-detail-section:hover {
+    background: #e9ecf2;
+    box-shadow: 0 4px 16px rgba(60,60,80,0.10);
+}
+.analysis-detail-section h4 {
+    color: #3a5a8c;
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    margin-top: 0;
+    letter-spacing: 0.2px;
+}
+.analysis-detail-section p {
+    color: #2a3b4d;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.debug-skills-details {
+    margin-top: 30px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+}
+
+.debug-skills-details summary {
+    color: #6c757d;
+}
+
+/* Resume Summary specific styling (unchanged from previous) */
+.summary-display-area { /* New class to apply specific summary area styling */
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    text-align: left;
+}
+
+.summary-display-area .summary-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+.summary-display-area .summary-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.summary-display-area .summary-item {
+    margin-bottom: 15px;
+}
+
+.summary-display-area .summary-item p {
+    margin: 5px 0;
+}
+
+.summary-display-area .summary-item strong {
+    color: #222;
+}
+
+.summary-display-area .summary-item ul {
+    list-style-type: square; /* Changed to square for clarity */
+    padding-left: 25px;
+    margin-top: 5px;
+}
+
+.summary-display-area a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.summary-display-area a:hover {
+    text-decoration: underline;
+}
+
+.project-point, .summary-item p:not(:first-child), .summary-item ul, .summary-item li {
+    font-weight: 400 !important;
+    margin: 0 0 2px 0;
+    padding: 0;
+}
+.summary-section {
+    margin-bottom: 10px !important;
+    padding-bottom: 0 !important;
+}
+.compact-section {
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.summary-tech-stack {
+    margin-bottom: 4px !important;
+    margin-top: 4px !important;
+}
+.summary-section h4, .summary-section strong {
+    margin-bottom: 2px !important;
+}
+.summary-section span {
+    display: inline;
+    font-weight: 400;
+    margin-left: 2px;
+}
+.skills-list {
+    width: 100%;
+    max-width: 320px;
+    background: #f4f6fa !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(60,60,80,0.06) !important;
+    padding: 18px 24px 18px 24px !important;
+    margin: 0 10px;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.skills-list:hover {
+    background: #e9ecf2 !important;
+    box-shadow: 0 4px 16px rgba(60,60,80,0.10) !important;
+}
+.skills-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #3a5a8c !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.skill-item.match {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: 2px solid #43e97b;
+    color: #2e7d32;
+    border-radius: 20px;
+    padding: 6px 18px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: none;
+    transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.skill-item.match .skill-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+.skill-item.match:hover {
+    background: #e8fbe8;
+    color: #228b22;
+    border-color: #228b22;
+}
+
+.skill-item.miss {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: 2px solid #f44336;
+    color: #b23c3c;
+    border-radius: 20px;
+    padding: 6px 18px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: none;
+    transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.skill-item.miss .skill-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+.skill-item.miss:hover {
+    background: #fdeaea;
+    color: #c62828;
+    border-color: #c62828;
+}

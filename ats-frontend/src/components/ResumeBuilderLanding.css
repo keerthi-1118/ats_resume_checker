@@ -1,0 +1,398 @@
+.resume-builder-landing {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    overflow: hidden;
+}
+
+.landing-content {
+    flex: 1;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 50%, rgba(0, 212, 170, 0.1) 0%, transparent 50%);
+}
+
+.brand-header {
+    margin-bottom: 40px;
+}
+
+.brand-name {
+    font-size: 2.2rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.5px;
+    background: linear-gradient(270deg, #00d4aa, #00bfff, #a259ff, #ffb347, #ff6ec4, #00d4aa);
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: brand-gradient-move 5s ease-in-out infinite alternate;
+}
+
+@keyframes brand-gradient-move {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.hero-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-text {
+    max-width: 600px;
+}
+
+.sub-heading {
+    color: #00d4aa;
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+.main-heading {
+    font-size: 3.8rem;
+    font-weight: 300;
+    line-height: 1.1;
+    margin: 0 0 30px 0;
+    letter-spacing: -1px;
+}
+
+.main-heading-teal {
+    color: #00d4aa;
+    font-weight: 300;
+    font-size: 1em;
+    letter-spacing: -1px;
+    font-family: inherit;
+}
+
+.main-heading-blue {
+    color: #00bfff;
+    font-weight: 300;
+    font-size: 1em;
+    letter-spacing: -1px;
+    font-family: inherit;
+}
+
+.main-heading-gradient {
+    font-size: 3.8rem;
+    font-weight: 300;
+    line-height: 1.1;
+    margin: 0 0 30px 0;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, #00d4aa 0%, #ffb347 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    white-space: normal;
+}
+
+.strong-text {
+    color: #00d4aa;
+    font-weight: 400;
+    text-shadow: 0 0 15px rgba(0, 212, 170, 0.2);
+}
+
+.thin-text {
+    color: #e0e0e0;
+    font-weight: 200;
+    font-size: 0.95em;
+    opacity: 0.9;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #b0b0b0;
+    margin: 0 0 40px 0;
+    max-width: 500px;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 25px rgba(0, 212, 170, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 212, 170, 0.3);
+    background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+}
+
+.button-icon {
+    font-size: 1.1rem;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+.resume-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: radial-gradient(circle at 70% 50%, rgba(0, 212, 170, 0.05) 0%, transparent 50%);
+    perspective: 1000px;
+}
+
+.preview-container {
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    max-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    animation: float 6s ease-in-out infinite;
+}
+
+.preview-container:hover {
+    animation-play-state: paused;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: perspective(1000px) rotateY(15deg) rotateX(5deg) translateY(0px);
+    }
+    50% {
+        transform: perspective(1000px) rotateY(25deg) rotateX(8deg) translateY(-10px);
+    }
+}
+
+.resume-paper {
+    background: white;
+    color: #333;
+    padding: 40px;
+    font-family: 'Times New Roman', serif;
+    line-height: 1.4;
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 550px;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    transform: rotateY(15deg) rotateX(5deg);
+    transition: transform 0.3s ease;
+}
+
+.preview-container:hover .resume-paper {
+    transform: rotateY(25deg) rotateX(8deg);
+}
+
+.resume-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #00d4aa;
+}
+
+.resume-name {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.contact-info {
+    margin: 0;
+}
+
+.contact-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.resume-section {
+    margin-bottom: 20px;
+}
+
+.resume-section h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #00d4aa;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.resume-section p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.resume-section ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.resume-section li {
+    margin: 3px 0;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.resume-section strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .resume-builder-landing {
+        flex-direction: column;
+    }
+    
+    .landing-content {
+        padding: 40px 30px;
+    }
+    
+    .main-heading {
+        font-size: 3rem;
+    }
+    
+    .resume-preview {
+        padding: 30px;
+    }
+    
+    .preview-container {
+        max-width: 400px;
+        max-height: 500px;
+    }
+    
+    .resume-paper {
+        max-width: 350px;
+        max-height: 450px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .landing-content {
+        padding: 30px 20px;
+    }
+    
+    .brand-name {
+        font-size: 1.8rem;
+    }
+    
+    .main-heading {
+        font-size: 2.5rem;
+        letter-spacing: -0.5px;
+    }
+    
+    .description {
+        font-size: 1rem;
+    }
+    
+    .cta-button {
+        padding: 14px 28px;
+        font-size: 0.9rem;
+    }
+    
+    .resume-preview {
+        padding: 20px;
+    }
+    
+    .preview-container {
+        max-width: 350px;
+        max-height: 400px;
+    }
+    
+    .resume-paper {
+        max-width: 300px;
+        max-height: 350px;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-content {
+        padding: 20px 15px;
+    }
+    
+    .brand-name {
+        font-size: 1.6rem;
+    }
+    
+    .main-heading {
+        font-size: 2rem;
+    }
+    
+    .sub-heading {
+        font-size: 0.9rem;
+    }
+    
+    .description {
+        font-size: 0.9rem;
+    }
+    
+    .cta-button {
+        padding: 12px 24px;
+        font-size: 0.85rem;
+    }
+    
+    .resume-preview {
+        padding: 15px;
+    }
+    
+    .preview-container {
+        max-width: 300px;
+        max-height: 350px;
+    }
+    
+    .resume-paper {
+        max-width: 280px;
+        max-height: 300px;
+        padding: 20px;
+    }
+    
+    .resume-name {
+        font-size: 1.6rem;
+    }
+}

@@ -1,0 +1,194 @@
+.resume-preview {
+    background: white;
+    color: #333;
+    padding: 40px;
+    font-family: 'Times New Roman', serif;
+    line-height: 1.4;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.preview-contact-info {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #00d4aa;
+}
+
+.preview-contact-info h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.preview-contact-info .job-title {
+    font-size: 1.2rem;
+    color: #666;
+    margin: 0 0 12px 0;
+    font-style: italic;
+}
+
+.preview-contact-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.preview-contact-info a {
+    color: #00d4aa;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.preview-contact-info a:hover {
+    text-decoration: underline;
+}
+
+.preview-section {
+    margin-bottom: 20px;
+}
+
+.preview-section h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #00d4aa;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.preview-section p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.preview-item {
+    margin-bottom: 15px;
+}
+
+.preview-item p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.preview-item strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.preview-item ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.preview-item li {
+    margin: 3px 0;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.preview-link {
+    font-size: 0.85rem;
+    color: #00d4aa;
+    margin: 5px 0;
+}
+
+.preview-link a {
+    color: #00d4aa;
+    text-decoration: none;
+}
+
+.preview-link a:hover {
+    text-decoration: underline;
+}
+
+.preview-tech-stack {
+    font-size: 0.8rem;
+    color: #777;
+    font-style: italic;
+    margin: 5px 0;
+}
+
+/* PDF specific styles */
+@media print {
+    .resume-preview {
+        box-shadow: none;
+        border-radius: 0;
+        padding: 20px;
+        margin: 0;
+        max-width: none;
+    }
+    
+    .preview-contact-info h2 {
+        font-size: 1.8rem;
+    }
+    
+    .preview-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .preview-section p {
+        font-size: 0.9rem;
+    }
+    
+    .preview-item li {
+        font-size: 0.8rem;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .resume-preview {
+        padding: 25px;
+        margin: 10px;
+    }
+    
+    .preview-contact-info h2 {
+        font-size: 1.8rem;
+    }
+    
+    .preview-contact-info .job-title {
+        font-size: 1rem;
+    }
+    
+    .preview-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .preview-section p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .resume-preview {
+        padding: 20px;
+        margin: 5px;
+    }
+    
+    .preview-contact-info h2 {
+        font-size: 1.5rem;
+    }
+    
+    .preview-contact-info .job-title {
+        font-size: 0.9rem;
+    }
+    
+    .preview-section h3 {
+        font-size: 1rem;
+    }
+    
+    .preview-section p {
+        font-size: 0.85rem;
+    }
+    
+    .preview-item li {
+        font-size: 0.8rem;
+    }
+}
