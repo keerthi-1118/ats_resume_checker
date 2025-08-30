@@ -170,7 +170,7 @@
     justify-content: center;
     padding: 40px;
     background: radial-gradient(circle at 70% 50%, rgba(0, 212, 170, 0.05) 0%, transparent 50%);
-    perspective: 1000px;
+    perspective: 1200px;
 }
 
 .preview-container {
@@ -182,7 +182,6 @@
     align-items: center;
     justify-content: center;
     transform-style: preserve-3d;
-    animation: float 6s ease-in-out infinite;
 }
 
 .preview-container:hover {
@@ -198,72 +197,141 @@
     }
 }
 
+.rotating-resume {
+    animation: resume-rotate 8s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+@keyframes resume-rotate {
+    0%, 100% {
+        transform: rotateY(15deg) rotateX(5deg) translateY(0px);
+    }
+    25% {
+        transform: rotateY(25deg) rotateX(8deg) translateY(-10px);
+    }
+    50% {
+        transform: rotateY(15deg) rotateX(5deg) translateY(0px);
+    }
+    75% {
+        transform: rotateY(5deg) rotateX(2deg) translateY(5px);
+    }
+}
+
+.project-item {
+    margin-bottom: 10px;
+    background: transparent;
+}
+
+.project-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.project-link a {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.7rem;
+    background: transparent;
+}
+
+.project-link a:hover {
+    text-decoration: underline;
+}
+
 .resume-paper {
     background: white;
     color: #333;
-    padding: 40px;
-    font-family: 'Times New Roman', serif;
-    line-height: 1.4;
+    padding: 25px;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    line-height: 1.2;
     width: 100%;
     height: 100%;
-    max-width: 400px;
-    max-height: 550px;
-    overflow-y: auto;
-    border-radius: 8px;
+    max-width: 450px;
+    max-height: 600px;
+    overflow: hidden;
+    border-radius: 4px;
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.1);
     transform: rotateY(15deg) rotateX(5deg);
     transition: transform 0.3s ease;
+    font-size: 0.75rem;
+    transform-style: preserve-3d;
+    position: relative;
 }
 
-.preview-container:hover .resume-paper {
-    transform: rotateY(25deg) rotateX(8deg);
+.resume-paper * {
+    background: transparent !important;
 }
 
-.resume-header {
+.resume-paper .resume-section {
+    background: transparent !important;
+}
+
+.resume-paper .project-item {
+    background: transparent !important;
+}
+
+.resume-paper .project-title-row {
+    background: transparent !important;
+}
+
+.resume-paper .project-link {
+    background: transparent !important;
+}
+
+.resume-paper .project-link a {
+    background: transparent !important;
+}
+
+.resume-paper .resume-header {
     text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #00d4aa;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #919191;
+    padding-left: 25px;
+    padding-right: 15px;
 }
 
 .resume-name {
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0 0 8px 0;
+    font-size: 1.4rem;
+    font-weight: 700;
     color: #333;
-}
-
-.contact-info {
-    margin: 0;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
 }
 
 .contact-info p {
-    margin: 5px 0;
-    font-size: 0.9rem;
-    color: #555;
+    margin: 0;
+    font-size: 0.75rem;
+    color: #0066cc;
+    font-weight: 500;
 }
 
 .resume-section {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
+    padding-left: 25px;
+    padding-right: 15px;
 }
 
 .resume-section h4 {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #00d4aa;
-    margin: 0 0 12px 0;
+    color: #333;
+    margin: 0 0 6px 0;
+    border-bottom: 1px solid #575151;
+    padding-bottom: 4px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
 }
 
 .resume-section p {
-    margin: 8px 0;
-    font-size: 0.9rem;
+    margin: 0 0 4px 0;
+    font-size: 0.7rem;
     color: #333;
+    line-height: 1.3;
 }
 
 .resume-section ul {
@@ -279,120 +347,92 @@
 
 .resume-section strong {
     color: #333;
-    font-weight: 600;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .resume-builder-landing {
-        flex-direction: column;
-    }
-    
-    .landing-content {
-        padding: 40px 30px;
-    }
-    
-    .main-heading {
-        font-size: 3rem;
-    }
-    
     .resume-preview {
-        padding: 30px;
-    }
-    
-    .preview-container {
-        max-width: 400px;
-        max-height: 500px;
+        perspective: 1000px;
     }
     
     .resume-paper {
-        max-width: 350px;
-        max-height: 450px;
-        padding: 30px;
+        max-width: 400px;
+        max-height: 550px;
+        padding: 20px;
+        font-size: 0.7rem;
+    }
+    
+    .resume-section {
+        margin-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 15px;
+    }
+    
+    .resume-section h4 {
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+    
+    .resume-section p {
+        font-size: 0.65rem;
+        margin-bottom: 3px;
     }
 }
 
 @media (max-width: 768px) {
-    .landing-content {
-        padding: 30px 20px;
-    }
-    
-    .brand-name {
-        font-size: 1.8rem;
-    }
-    
-    .main-heading {
-        font-size: 2.5rem;
-        letter-spacing: -0.5px;
-    }
-    
-    .description {
-        font-size: 1rem;
-    }
-    
-    .cta-button {
-        padding: 14px 28px;
-        font-size: 0.9rem;
-    }
-    
     .resume-preview {
-        padding: 20px;
-    }
-    
-    .preview-container {
-        max-width: 350px;
-        max-height: 400px;
+        perspective: 800px;
     }
     
     .resume-paper {
-        max-width: 300px;
-        max-height: 350px;
-        padding: 25px;
+        max-width: 350px;
+        max-height: 500px;
+        padding: 18px;
+        font-size: 0.65rem;
+    }
+    
+    .resume-section {
+        margin-bottom: 8px;
+        padding-left: 18px;
+        padding-right: 12px;
+    }
+    
+    .resume-section h4 {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
+    
+    .resume-section p {
+        font-size: 0.6rem;
+        margin-bottom: 2px;
     }
 }
 
 @media (max-width: 480px) {
-    .landing-content {
-        padding: 20px 15px;
-    }
-    
-    .brand-name {
-        font-size: 1.6rem;
-    }
-    
-    .main-heading {
-        font-size: 2rem;
-    }
-    
-    .sub-heading {
-        font-size: 0.9rem;
-    }
-    
-    .description {
-        font-size: 0.9rem;
-    }
-    
-    .cta-button {
-        padding: 12px 24px;
-        font-size: 0.85rem;
-    }
-    
     .resume-preview {
-        padding: 15px;
-    }
-    
-    .preview-container {
-        max-width: 300px;
-        max-height: 350px;
+        perspective: 600px;
     }
     
     .resume-paper {
-        max-width: 280px;
-        max-height: 300px;
-        padding: 20px;
+        max-width: 300px;
+        max-height: 450px;
+        padding: 15px;
+        font-size: 0.6rem;
     }
     
-    .resume-name {
-        font-size: 1.6rem;
+    .resume-section {
+        margin-bottom: 6px;
+        padding-left: 15px;
+        padding-right: 10px;
+    }
+    
+    .resume-section h4 {
+        font-size: 0.75rem;
+        margin-bottom: 3px;
+    }
+    
+    .resume-section p {
+        font-size: 0.55rem;
+        margin-bottom: 2px;
     }
 }

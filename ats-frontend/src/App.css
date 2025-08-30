@@ -20,37 +20,140 @@ body, html {
     box-sizing: border-box;
 }
 
+/* Initial screen styles with beautiful beach sunset background */
+.initial-screen {
+    min-height: 100vh;
+    min-width: 100vw;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
 .App.initial-screen {
-    background: url('https://i.imgur.com/6Iej2c3.png') center center/cover no-repeat, linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    /* Remove beach image and use a clean, professional gradient */
+    background: linear-gradient(120deg, #f6d365 0%, #fda085 50%, #a1c4fd 100%);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 100%;
     text-align: center;
-    background-color: #ffffff; /* Ensure white background for the card */
+    background-color: #ffffff00; /* Transparent to show gradient */
 }
 
-
-.dropzone {
-    border: 2px dashed #a0a0a0;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.7);
-    padding: 40px 30px;
-    margin-bottom: 24px;
+.initial-screen h1 {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin-bottom: 40px;
+    font-size: 3rem;
+    font-weight: 800;
     text-align: center;
-    font-size: 1.1rem;
-    color: #444;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.initial-screen .dropzone {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px dashed #6c63ff;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
     cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    min-width: 400px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.initial-screen .dropzone:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #48c6ef;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.initial-screen .dropzone.dragover {
+    background: rgba(108, 99, 255, 0.1);
+    border-color: #6c63ff;
+    transform: scale(1.02);
+}
+
+.initial-screen label {
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: block;
+    text-align: center;
+}
+
+.initial-screen textarea {
     width: 100%;
     max-width: 500px;
+    min-height: 120px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
 }
-.dropzone.dragover {
-    border-color: #6c63ff;
-    box-shadow: 0 6px 32px rgba(108,99,255,0.12);
-    background: #f3f0ff;
+
+.initial-screen textarea:focus {
+    outline: none;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.initial-screen button {
+    background: linear-gradient(90deg, #6c63ff 0%, #48c6ef 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.initial-screen button:hover:not(:disabled) {
+    background: linear-gradient(90deg, #48c6ef 0%, #6c63ff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.initial-screen button:disabled {
+    background: rgba(189, 189, 189, 0.8);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.initial-screen .error {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    text-shadow: none;
 }
 
 input[type="file"] {
@@ -129,11 +232,13 @@ h1 {
 .analyze-page-bg {
     min-height: 100vh;
     min-width: 100vw;
-    background: #f6f8fa; /* Light grey background for the result page */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
+    /* Remove beach image and use a multi-light gradient */
+    background: linear-gradient(120deg, #a9bac5 0%, #d8ab9f 50%, #abc0e3 100%);
+    transition: background 0.5s;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -317,8 +422,8 @@ h1 {
     padding: 5px 10px;
     border-radius: 5px;
 }
-.suggestion.low { color: #dc3545; background-color: #f8d7da; }
-.suggestion.medium { color: #ffc107; background-color: #fff3cd; }
+.suggestion.low { color: #dc9aed; background-color: #f8d7da; }
+.suggestion.medium { color: #c3c87a; background-color: #fff3cd; }
 .suggestion.high { color: #28a745; background-color: #d4edda; }
 
 /* Skills Comparison */
@@ -600,4 +705,62 @@ h1 {
     background: #fdeaea;
     color: #c62828;
     border-color: #c62828;
+}
+
+/* Responsive design for initial screen */
+@media (max-width: 768px) {
+    .initial-screen {
+        padding: 15px;
+    }
+    
+    .initial-screen h1 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+    
+    .initial-screen .dropzone {
+        min-width: 300px;
+        padding: 30px 20px;
+        margin-bottom: 25px;
+    }
+    
+    .initial-screen textarea {
+        max-width: 350px;
+        min-height: 100px;
+        padding: 12px;
+    }
+    
+    .initial-screen button {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .initial-screen h1 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+    }
+    
+    .initial-screen .dropzone {
+        min-width: 280px;
+        padding: 25px 15px;
+        margin-bottom: 20px;
+    }
+    
+    .initial-screen textarea {
+        max-width: 300px;
+        min-height: 80px;
+        padding: 10px;
+    }
+    
+    .initial-screen button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .initial-screen label {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
 }

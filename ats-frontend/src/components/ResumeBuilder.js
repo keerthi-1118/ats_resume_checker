@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import html2pdf from 'html2pdf.js';
 import './ResumeBuilder.css';
 
 function isUrl(str) {
@@ -22,7 +23,7 @@ const ResumeBuilder = ({ onBackToLanding }) => {
             summary: ''
         },
         education: [
-            { degree: '', university: '', year: '', location: '' }
+            { degree: '', university: '', year: '', cgpa: '' }
         ],
         experience: [
             { title: '', company: '', duration: '', location: '', responsibilities: [''] }
@@ -125,6 +126,66 @@ const ResumeBuilder = ({ onBackToLanding }) => {
                 [type]: prev.skills[type].filter((_, i) => i !== index)
             }
         }));
+    };
+
+    const handleDownload = () => {
+        try {
+            // Get the resume preview element
+            const resumeElement = document.querySelector('.resume-preview-paper');
+            
+            if (!resumeElement) {
+                alert('Resume preview not found. Please try again.');
+                return;
+            }
+
+            // Show loading message
+            const downloadButton = document.querySelector('.download-button');
+            const originalText = downloadButton.innerHTML;
+            downloadButton.innerHTML = 'Generating PDF... <span class="download-icon">⏳</span>';
+            downloadButton.disabled = true;
+
+            // Configure PDF options for A4 format
+            const pdfOptions = {
+                margin: [10, 10, 10, 10], // [top, left, bottom, right] in mm
+                filename: `${formData.contact.fullName || 'resume'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, // Higher scale for better quality
+                    useCORS: true,
+                    letterRendering: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff'
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', // A4 format
+                    orientation: 'portrait'
+                }
+            };
+
+            // Generate and download PDF
+            html2pdf()
+                .from(resumeElement)
+                .set(pdfOptions)
+                .save()
+                .then(() => {
+                    console.log('PDF generated successfully');
+                    // Reset button
+                    downloadButton.innerHTML = originalText;
+                    downloadButton.disabled = false;
+                })
+                .catch(err => {
+                    console.error('PDF generation failed:', err);
+                    alert('Failed to generate PDF. Please try again or check the console for details.');
+                    // Reset button
+                    downloadButton.innerHTML = originalText;
+                    downloadButton.disabled = false;
+                });
+
+        } catch (error) {
+            console.error('Error in handleDownload:', error);
+            alert('An error occurred while generating the PDF. Please try again.');
+        }
     };
 
     const renderContactForm = () => (
@@ -249,11 +310,11 @@ const ResumeBuilder = ({ onBackToLanding }) => {
                                 />
                             </div>
                             <div className="form-field">
-                                <label>Location</label>
+                                <label>CGPA</label>
                                 <input
                                     type="text"
-                                    value={edu.location}
-                                    onChange={(e) => handleArrayChange('education', index, 'location', e.target.value)}
+                                    value={edu.cgpa}
+                                    onChange={(e) => handleArrayChange('education', index, 'cgpa', e.target.value)}
                                 />
                             </div>
                         </div>
@@ -272,7 +333,7 @@ const ResumeBuilder = ({ onBackToLanding }) => {
             <button 
                 type="button" 
                 className="add-btn"
-                onClick={() => addArrayItem('education', { degree: '', university: '', year: '', location: '' })}
+                onClick={() => addArrayItem('education', { degree: '', university: '', year: '', cgpa: '' })}
             >
                 Add Education
             </button>
@@ -629,7 +690,7 @@ const ResumeBuilder = ({ onBackToLanding }) => {
         <div className="resume-builder">
             <div className="builder-header">
                 <div className="header-left">
-                    <h1 className="app-name">ResumeWithV</h1>
+                    <h1 className="app-name">ResumeWithU</h1>
                 </div>
                 <div className="header-right">
                     <nav className="tab-navigation">
@@ -653,43 +714,46 @@ const ResumeBuilder = ({ onBackToLanding }) => {
                         <div className="resume-preview-paper">
                             {/* Contact Information */}
                             <div className="preview-header">
-                                <h3 className="preview-name">{formData.contact.fullName}</h3>
+                                <h3 className="preview-name">{formData.contact.fullName || 'Your Name'}</h3>
                                 <div className="preview-contact">
-                                    <p>
-                                        {formData.contact.phone && <span>{formData.contact.phone}</span>}
-                                        {formData.contact.phone && formData.contact.email && ' | '}
-                                        {formData.contact.email && <span>{formData.contact.email}</span>}
-                                    </p>
-                                    <p>
-                                        {formData.contact.linkedin && <span>{isUrl(formData.contact.linkedin) ? <a href={formData.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> : formData.contact.linkedin}</span>}
-                                        {formData.contact.linkedin && (formData.contact.github || formData.contact.portfolio || formData.contact.blogs) && ' • '}
-                                        {formData.contact.github && <span>{isUrl(formData.contact.github) ? <a href={formData.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a> : formData.contact.github}</span>}
-                                        {formData.contact.github && (formData.contact.portfolio || formData.contact.blogs) && ' • '}
-                                        {formData.contact.portfolio && <span>{isUrl(formData.contact.portfolio) ? <a href={formData.contact.portfolio} target="_blank" rel="noopener noreferrer">Portfolio</a> : formData.contact.portfolio}</span>}
-                                        {formData.contact.portfolio && formData.contact.blogs && ' • '}
-                                        {formData.contact.blogs && <span>{isUrl(formData.contact.blogs) ? <a href={formData.contact.blogs} target="_blank" rel="noopener noreferrer">Blogs</a> : formData.contact.blogs}</span>}
-                                    </p>
+                                                                           <p>
+                                           {formData.contact.phone && <span className="contact-item">{formData.contact.phone}</span>}
+                                           {formData.contact.phone && formData.contact.email && <span className="contact-separator"> | </span>}
+                                           {formData.contact.email && <span className="contact-item">{formData.contact.email}</span>}
+                                           {formData.contact.email && formData.contact.linkedin && <span className="contact-separator"> | </span>}
+                                           {formData.contact.linkedin && <span className="contact-item">{isUrl(formData.contact.linkedin) ? <a href={formData.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> : formData.contact.linkedin}</span>}
+                                           {formData.contact.linkedin && formData.contact.github && <span className="contact-separator"> | </span>}
+                                           {formData.contact.github && <span className="contact-item">{isUrl(formData.contact.github) ? <a href={formData.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a> : formData.contact.github}</span>}
+                                       </p>
+                                    {(formData.contact.portfolio || formData.contact.blogs) && (
+                                        <p>
+                                            {formData.contact.portfolio && <span className="contact-item">{isUrl(formData.contact.portfolio) ? <a href={formData.contact.portfolio} target="_blank" rel="noopener noreferrer">Portfolio</a> : formData.contact.portfolio}</span>}
+                                            {formData.contact.portfolio && formData.contact.blogs && <span className="contact-separator"> | </span>}
+                                            {formData.contact.blogs && <span className="contact-item">{isUrl(formData.contact.blogs) ? <a href={formData.contact.blogs} target="_blank" rel="noopener noreferrer">Blogs</a> : formData.contact.blogs}</span>}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
                             {/* Summary */}
-                            {formData.summary.summary && (
-                                <div className="preview-section">
-                                    <h4>SUMMARY</h4>
+                            <div className="preview-content-section">
+                                <h4>SUMMARY</h4>
+                                {formData.summary.summary ? (
                                     <p>{formData.summary.summary}</p>
-                                </div>
-                            )}
+                                ) : (
+                                    <p style={{ color: '#999', fontStyle: 'italic' }}>Enter your professional summary here...</p>
+                                )}
+                            </div>
 
                             {/* Education */}
                             {formData.education.some(edu => edu.degree || edu.university) && (
-                                <div className="preview-section">
+                                <div className="preview-content-section">
                                     <h4>EDUCATION</h4>
                                     {formData.education.map((edu, index) => (
                                         edu.degree || edu.university ? (
                                             <div key={index} className="preview-item">
-                                                <p><strong>{edu.degree}</strong></p>
-                                                <p>{edu.university} {edu.year && `• ${edu.year}`}</p>
-                                                {edu.location && <p>{edu.location}</p>}
+                                                <p><strong>{edu.degree}</strong>{edu.year && ` • ${edu.year}`}</p>
+                                                <p>{edu.university}{edu.cgpa && <span>, <strong>CGPA:{edu.cgpa}</strong></span>}</p>
                                             </div>
                                         ) : null
                                     ))}
@@ -698,12 +762,12 @@ const ResumeBuilder = ({ onBackToLanding }) => {
 
                             {/* Experience */}
                             {formData.experience.some(exp => exp.title || exp.company) && (
-                                <div className="preview-section">
+                                <div className="preview-content-section">
                                     <h4>EXPERIENCE</h4>
                                     {formData.experience.map((exp, index) => (
                                         exp.title || exp.company ? (
                                             <div key={index} className="preview-item">
-                                                <p><strong>{exp.title}</strong> {exp.company && `at ${exp.company}`} {exp.duration && `(${exp.duration})`}</p>
+                                                <p><strong>{exp.title}</strong>{exp.company && ` at ${exp.company}`}{exp.duration && ` (${exp.duration})`}</p>
                                                 {exp.location && <p>{exp.location}</p>}
                                                 {exp.responsibilities && exp.responsibilities.length > 0 && exp.responsibilities.some(r => r) && (
                                                     <ul>
@@ -718,13 +782,15 @@ const ResumeBuilder = ({ onBackToLanding }) => {
 
                             {/* Projects */}
                             {formData.projects.some(proj => proj.title) && (
-                                <div className="preview-section">
+                                <div className="preview-content-section">
                                     <h4>PROJECTS</h4>
                                     {formData.projects.map((proj, index) => (
                                         proj.title ? (
                                             <div key={index} className="preview-item">
-                                                <p><strong>{proj.title}</strong></p>
-                                                {proj.link && <p className="preview-link"><a href={proj.link} target="_blank" rel="noopener noreferrer">{proj.link}</a></p>}
+                                                <p className="project-title-row">
+                                                    <strong>{proj.title}</strong>
+                                                    {proj.link && <span className="project-link"><a href={proj.link} target="_blank" rel="noopener noreferrer">Link</a></span>}
+                                                </p>
                                                 {proj.description && <p>{proj.description}</p>}
                                             </div>
                                         ) : null
@@ -734,26 +800,30 @@ const ResumeBuilder = ({ onBackToLanding }) => {
 
                             {/* Skills */}
                             {(formData.skills.technical.some(skill => skill) || formData.skills.soft.some(skill => skill)) && (
-                                <div className="preview-section">
+                                <div className="preview-content-section">
                                     <h4>SKILLS</h4>
                                     {formData.skills.technical.some(skill => skill) && (
-                                        <p><strong>Technical:</strong> {formData.skills.technical.filter(s => s).join(', ')}</p>
+                                        <div>
+                                            <p><strong>Technical:</strong> {formData.skills.technical.filter(skill => skill).join(', ')}</p>
+                                        </div>
                                     )}
                                     {formData.skills.soft.some(skill => skill) && (
-                                        <p><strong>Soft:</strong> {formData.skills.soft.filter(s => s).join(', ')}</p>
+                                        <div>
+                                            <p><strong>Soft:</strong> {formData.skills.soft.filter(skill => skill).join(', ')}</p>
+                                        </div>
                                     )}
                                 </div>
                             )}
 
                             {/* Certificates */}
                             {formData.certificates.some(cert => cert.name) && (
-                                <div className="preview-section">
+                                <div className="preview-content-section">
                                     <h4>CERTIFICATIONS</h4>
                                     <ul>
                                         {formData.certificates.map((cert, index) => (
                                             cert.name ? (
                                                 <li key={index}>
-                                                    <strong>{cert.name}</strong> {cert.issuer && `by ${cert.issuer}`} {cert.date && `(${cert.date})`}
+                                                    <strong>{cert.name}</strong>{cert.issuer && ` by ${cert.issuer}`}{cert.date && ` (${cert.date})`}
                                                 </li>
                                             ) : null
                                         ))}
@@ -763,13 +833,13 @@ const ResumeBuilder = ({ onBackToLanding }) => {
 
                             {/* Languages */}
                             {formData.languages.some(lang => lang.name) && (
-                                <div className="preview-section">
+                                <div className="preview-content-section">
                                     <h4>LANGUAGES</h4>
                                     <ul>
                                         {formData.languages.map((lang, index) => (
                                             lang.name ? (
                                                 <li key={index}>
-                                                    <strong>{lang.name}</strong> {lang.proficiency && `(${lang.proficiency})`}
+                                                    <strong>{lang.name}</strong>{lang.proficiency && ` (${lang.proficiency})`}
                                                 </li>
                                             ) : null
                                         ))}
@@ -784,6 +854,10 @@ const ResumeBuilder = ({ onBackToLanding }) => {
                     <div className="form-content">
                         {renderFormContent()}
                         <div className="form-actions">
+                            <button className="download-button" onClick={handleDownload}>
+                                Download PDF
+                                <span className="download-icon">📄</span>
+                            </button>
                             <button className="save-button">
                                 Save
                                 <span className="save-icon">💾</span>
