@@ -117,7 +117,7 @@ body, html {
 }
 
 .initial-screen button {
-    background: linear-gradient(90deg, #6c63ff 0%, #48c6ef 100%);
+    background: linear-gradient(90deg, #00d4aa 0%, #0a86af 100%);
     color: #fff;
     border: none;
     border-radius: 12px;
@@ -132,7 +132,7 @@ body, html {
 }
 
 .initial-screen button:hover:not(:disabled) {
-    background: linear-gradient(90deg, #48c6ef 0%, #6c63ff 100%);
+    background: linear-gradient(90deg, #0a86af 0%, #00d4aa 100%);
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
@@ -174,7 +174,7 @@ textarea {
 }
 
 button {
-    background: linear-gradient(90deg, #6c63ff 0%, #48c6ef 100%);
+    background: linear-gradient(90deg, #0a86af 0%, #00d4aa 100%);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -191,7 +191,7 @@ button:disabled {
     cursor: not-allowed;
 }
 button:hover:not(:disabled) {
-    background: linear-gradient(90deg, #48c6ef 0%, #6c63ff 100%);
+    background: linear-gradient(90deg, #00d4aa 100%, #0a86af 0%,);
     box-shadow: 0 4px 16px rgba(76, 70, 255, 0.10);
 }
 

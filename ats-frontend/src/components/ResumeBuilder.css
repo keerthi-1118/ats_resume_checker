@@ -57,7 +57,7 @@
 .tab-button {
     background: transparent;
     border: none;
-    color: #b0b0b0;
+    color: #f5f8f7;
     padding: 10px 15px;
     font-size: 0.85rem;
     font-weight: 500;
@@ -72,14 +72,12 @@
 }
 
 .tab-button:hover {
-    color: #e0e0e0;
-    background: rgba(0, 212, 170, 0.1);
+    color: #f5f8f7;
+    background:  rgb(106, 161, 147)
 }
 
 .tab-button.active {
-    color: #00d4aa;
-    background: rgba(0, 212, 170, 0.15);
-    box-shadow: 0 0 10px rgba(0, 212, 170, 0.2);
+    color: #f5f8f7;
 }
 
 .tab-icon {
@@ -160,15 +158,15 @@
     text-align: center;
     margin-bottom: 12px;
     padding-bottom: 4px;
-    border-bottom: 1px solid #919191;
+    border-bottom: 1px solid #ffffff;
 }
 
 .preview-name {
-    font-size: 1rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #222;
     text-align: center;
-    margin: 0 0 2px 0;
+    margin: -5px 0 8px 0;
     padding: 0;
     border: none;
 }
@@ -501,7 +499,6 @@
 }
 
 .add-btn:hover {
-    background: #00b894;
     transform: translateY(-1px);
     box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
 }
@@ -556,11 +553,17 @@
 
 .form-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     gap: 15px;
     margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid #404040;
+}
+
+.right-buttons {
+    display: flex;
+    gap: 15px;
 }
 
 .download-button {
@@ -569,7 +572,7 @@
     border: none;
     padding: 12px 24px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 200;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -580,7 +583,6 @@
 }
 
 .download-button:hover {
-    background: #00b894;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
 }
@@ -595,7 +597,7 @@
     border: none;
     padding: 12px 24px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 200;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -606,12 +608,36 @@
 }
 
 .save-button:hover {
-    background: #00b894;
     transform: translateY(-1px);
     box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
 }
 
 .save-icon {
+    font-size: 1rem;
+}
+
+.back-button {
+    background: #00d4aa;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 200;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(1, 140, 112, 0.3);
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(56, 157, 135, 0.4);
+}
+
+.back-icon {
     font-size: 1rem;
 }
 

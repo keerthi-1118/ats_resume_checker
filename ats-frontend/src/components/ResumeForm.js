@@ -1,10 +1,8 @@
-// src/components/ResumeForm.js
 import React from 'react';
 import InputField from './InputField';
 import ArrayField from './ArrayField';
 import SectionHeader from './SectionHeader';
-import './ResumeForm.css'; // Create this CSS file for form styling
-
+import './ResumeForm.css'; 
 function ResumeForm({
     resumeData,
     handleInputChange,

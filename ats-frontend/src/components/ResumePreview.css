@@ -1,46 +1,61 @@
 .resume-preview {
     background: white;
     color: #333;
-    padding: 40px;
-    font-family: 'Times New Roman', serif;
-    line-height: 1.4;
+    padding: 25px;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    line-height: 1.2;
     max-width: 800px;
     margin: 0 auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    position: relative;
+}
+
+/* Add the dark vertical bar on the left */
+.resume-preview::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #2c2c2c;
 }
 
 .preview-contact-info {
-    text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #00d4aa;
+    text-align: right;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .preview-contact-info h2 {
-    font-size: 2.2rem;
+    font-size: 1.4rem;
     font-weight: 700;
     margin: 0 0 8px 0;
     color: #333;
+    text-align: left;
 }
 
 .preview-contact-info .job-title {
-    font-size: 1.2rem;
-    color: #666;
-    margin: 0 0 12px 0;
-    font-style: italic;
+    font-size: 1rem;
+    color: #333;
+    margin: 0 0 8px 0;
+    font-style: normal;
+    text-align: left;
 }
 
 .preview-contact-info p {
-    margin: 5px 0;
+    margin: 2px 0;
     font-size: 0.9rem;
-    color: #555;
+    color: #333;
+    text-align: right;
 }
 
 .preview-contact-info a {
-    color: #00d4aa;
+    color: #333;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: normal;
 }
 
 .preview-contact-info a:hover {
@@ -48,18 +63,19 @@
 }
 
 .preview-section {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .preview-section h3 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #00d4aa;
-    margin: 0 0 12px 0;
+    color: #333;
+    margin: 0 0 6px 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+    background: none;
 }
 
 .preview-section p {
@@ -69,28 +85,38 @@
 }
 
 .preview-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    color: #222;
+    padding: 0;
 }
 
 .preview-item p {
-    margin: 5px 0;
-    font-size: 0.9rem;
+    margin: 3px 0;
+    font-size: 0.75rem;
+    color: #222;
+}
+
+.preview-item p strong {
+    font-weight: 700;
 }
 
 .preview-item strong {
-    color: #333;
+    color: #222;
     font-weight: 600;
 }
 
 .preview-item ul {
-    margin: 8px 0;
+    margin: 3px 0;
     padding-left: 20px;
 }
 
 .preview-item li {
-    margin: 3px 0;
-    font-size: 0.85rem;
-    color: #555;
+    font-size: 0.75rem;
+    margin: 2px 0;
+    line-height: 1.2;
+    color: #222;
 }
 
 .preview-link {
@@ -115,7 +141,165 @@
     margin: 5px 0;
 }
 
+/* Project title row styling */
+.project-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.project-link a {
+    color: #0066cc !important;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+.project-link a:hover {
+    text-decoration: underline;
+}
+
 /* PDF specific styles */
+.resume-preview-pdf {
+    background: white !important;
+    color: #333 !important;
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    line-height: 1.2 !important;
+    padding: 25px !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    animation: none !important;
+    position: relative !important;
+}
+
+/* Add the dark vertical bar for PDF */
+.resume-preview-pdf::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 4px !important;
+    background: #2c2c2c !important;
+}
+
+.resume-preview-pdf .preview-contact-info {
+    text-align: right !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+.resume-preview-pdf .preview-contact-info h2 {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 8px 0 !important;
+    color: #333 !important;
+    text-align: left !important;
+}
+
+.resume-preview-pdf .preview-contact-info .job-title {
+    font-size: 1rem !important;
+    color: #333 !important;
+    margin: 0 0 8px 0 !important;
+    font-style: normal !important;
+    text-align: left !important;
+}
+
+.resume-preview-pdf .preview-contact-info p {
+    margin: 2px 0 !important;
+    font-size: 0.9rem !important;
+    color: #333 !important;
+    text-align: right !important;
+}
+
+.resume-preview-pdf .preview-contact-info a {
+    color: #333 !important;
+    text-decoration: none !important;
+    font-weight: normal !important;
+}
+
+.resume-preview-pdf .preview-section {
+    margin-bottom: 15px !important;
+}
+
+.resume-preview-pdf .preview-section h3 {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    color: #333 !important;
+    margin: 0 0 6px 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    padding-bottom: 4px !important;
+    background: none !important;
+}
+
+.resume-preview-pdf .preview-section p {
+    margin: 8px 0 !important;
+    font-size: 0.95rem !important;
+    color: #333 !important;
+}
+
+.resume-preview-pdf .preview-item {
+    margin-bottom: 10px !important;
+    background: none !important;
+    border: none !important;
+    color: #222 !important;
+    padding: 0 !important;
+}
+
+.resume-preview-pdf .preview-item p {
+    margin: 3px 0 !important;
+    font-size: 0.75rem !important;
+    color: #222 !important;
+}
+
+.resume-preview-pdf .preview-item p strong {
+    font-weight: 700 !important;
+}
+
+.resume-preview-pdf .preview-item strong {
+    color: #222 !important;
+    font-weight: 600 !important;
+}
+
+.resume-preview-pdf .preview-item ul {
+    margin: 3px 0 !important;
+    padding-left: 20px !important;
+}
+
+.resume-preview-pdf .preview-item li {
+    font-size: 0.75rem !important;
+    margin: 2px 0 !important;
+    line-height: 1.2 !important;
+    color: #222 !important;
+}
+
+.resume-preview-pdf .preview-link {
+    font-size: 0.85rem !important;
+    color: transparent !important;
+    margin: 5px 0 !important;
+}
+
+.resume-preview-pdf .preview-link a {
+    color: transparent !important;
+    text-decoration: none !important;
+}
+
+.resume-preview-pdf .preview-tech-stack {
+    font-size: 0.8rem !important;
+    color: #777 !important;
+    font-style: italic !important;
+    margin: 5px 0 !important;
+}
+
 @media print {
     .resume-preview {
         box-shadow: none;

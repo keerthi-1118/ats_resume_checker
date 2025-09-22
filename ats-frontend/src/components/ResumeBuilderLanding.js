@@ -53,10 +53,15 @@ const ResumeBuilderLanding = ({ onStartBuilder }) => {
                         <p className="description">
                             ResumeWithU is an ATS-friendly resume maker designed to simplify the process of creating professional resumes without the hassle of login or sign-up. With ResumeWithU, users can easily input their details, generate a well-formatted resume, and export it in A4 PDF format.
                         </p>
-                        <button className="cta-button" onClick={onStartBuilder}>
-                            Create My Resume
-                            <span className="button-icon">🚀</span>
-                        </button>
+                        <div className="button-container">
+                            <button className="cta-button" onClick={onStartBuilder}>
+                                CREATE MY RESUME
+                                <span className="button-icon">🚀</span>
+                            </button>
+                            <button className="cta-button" onClick={() => window.location.href = '/ats-analyze'}>
+                                ANALYZE RESUME
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

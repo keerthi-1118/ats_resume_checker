@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'; // Added useEffect
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Sidebar from './components/Sidebar';
 import './App.css';
 import ResumeBuilder from './components/ResumeBuilder';
 import ResumeBuilderLanding from './components/ResumeBuilderLanding';
@@ -19,10 +18,8 @@ function App() {
     
     // New state for score animation
     const [displayedScore, setDisplayedScore] = useState(0); 
-    
     // New state for current page
     const [currentPage, setCurrentPage] = useState('ats-analyze');
-    
     // New state for resume builder flow
     const [showResumeForm, setShowResumeForm] = useState(false);
 
@@ -146,7 +143,6 @@ function App() {
         }
     };
 
-
     // Render different pages based on currentPage
     const renderPage = () => {
         switch (currentPage) {
@@ -156,18 +152,19 @@ function App() {
                 ) : (
                     <ResumeBuilderLanding onStartBuilder={() => setShowResumeForm(true)} />
                 );
-            
             case 'home':
                 return (
                     <div className="App initial-screen">
                         <h1>Welcome to ATS Tools</h1>
-                        <p>Choose a tool from the sidebar to get started.</p>
+                        <p>Choose a tool to get started.</p>
                         <button onClick={() => handleNavigation('ats-analyze')}>
                             Go to ATS Analyze
                         </button>
+                        <button style={{marginLeft: '16px'}} onClick={() => handleNavigation('resume-builder')}>
+                            Resume Builder
+                        </button>
                     </div>
                 );
-            
             case 'ats-analyze':
             default:
                 // Initial screen (centered, pastel bg)
@@ -203,9 +200,14 @@ function App() {
                                 value={jobDescription}
                                 onChange={handleDescriptionChange}
                             />
-                            <button onClick={handleAnalyze} disabled={loading}>
-                                {loading ? 'Analyzing...' : 'Analyze Resume'}
-                            </button>
+                            <div style={{display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '16px'}}>
+                                <button onClick={handleAnalyze} disabled={loading}>
+                                    {loading ? 'Analyzing...' : 'Analyze Resume'}
+                                </button>
+                                <button onClick={() => handleNavigation('resume-builder')}>
+                                    Resume Builder
+                                </button>
+                            </div>
                             {error && <p className="error">{error}</p>}
                         </div>
                     );
@@ -432,6 +434,17 @@ function App() {
                                                         (!mappedCerts || mappedCerts.length === 0)) && (
                                                             <p>No detailed summary data extracted. This may happen if the resume format is highly unstructured.</p>
                                                         )}
+                                                        <div style={{display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '24px'}}>
+                                                            <button onClick={handleAnalyze}>
+                                                                Analyze Resume
+                                                            </button>
+                                                            <button onClick={() => handleNavigation('resume-builder')}>
+                                                                Resume Builder
+                                                            </button>
+                                                            <button>
+                                                                Download
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 );
                                             })()
@@ -449,9 +462,9 @@ function App() {
 
     return (
         <>
-            <Sidebar onNavigate={handleNavigation} />
             {renderPage()}
         </>
     );
 }
+
 export default App;

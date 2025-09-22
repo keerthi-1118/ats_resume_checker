@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import html2pdf from 'html2pdf.js';
+import generateResumePdf from '../utils/resumePdfGenerator';
 import './ResumeBuilder.css';
 
 function isUrl(str) {
@@ -130,7 +131,7 @@ const ResumeBuilder = ({ onBackToLanding }) => {
 
     const handleDownload = () => {
         try {
-            // Get the resume preview element
+            // Get the resume preview element - use the correct class selector
             const resumeElement = document.querySelector('.resume-preview-paper');
             
             if (!resumeElement) {
@@ -144,47 +145,26 @@ const ResumeBuilder = ({ onBackToLanding }) => {
             downloadButton.innerHTML = 'Generating PDF... <span class="download-icon">⏳</span>';
             downloadButton.disabled = true;
 
-            // Configure PDF options for A4 format
-            const pdfOptions = {
-                margin: [10, 10, 10, 10], // [top, left, bottom, right] in mm
-                filename: `${formData.contact.fullName || 'resume'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2, // Higher scale for better quality
-                    useCORS: true,
-                    letterRendering: true,
-                    allowTaint: true,
-                    backgroundColor: '#ffffff'
-                },
-                jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', // A4 format
-                    orientation: 'portrait'
-                }
-            };
+            // Use the new PDF generator function
+            const filename = `${formData.contact.fullName || 'resume'}.pdf`;
+            generateResumePdf(resumeElement, filename);
 
-            // Generate and download PDF
-            html2pdf()
-                .from(resumeElement)
-                .set(pdfOptions)
-                .save()
-                .then(() => {
-                    console.log('PDF generated successfully');
-                    // Reset button
-                    downloadButton.innerHTML = originalText;
-                    downloadButton.disabled = false;
-                })
-                .catch(err => {
-                    console.error('PDF generation failed:', err);
-                    alert('Failed to generate PDF. Please try again or check the console for details.');
-                    // Reset button
-                    downloadButton.innerHTML = originalText;
-                    downloadButton.disabled = false;
-                });
+            // Reset button after a short delay
+            setTimeout(() => {
+                downloadButton.innerHTML = originalText;
+                downloadButton.disabled = false;
+            }, 2000);
 
         } catch (error) {
             console.error('Error in handleDownload:', error);
             alert('An error occurred while generating the PDF. Please try again.');
+            
+            // Reset button
+            const downloadButton = document.querySelector('.download-button');
+            if (downloadButton) {
+                downloadButton.innerHTML = 'Download PDF <span class="download-icon">📄</span>';
+                downloadButton.disabled = false;
+            }
         }
     };
 
@@ -854,14 +834,20 @@ const ResumeBuilder = ({ onBackToLanding }) => {
                     <div className="form-content">
                         {renderFormContent()}
                         <div className="form-actions">
-                            <button className="download-button" onClick={handleDownload}>
-                                Download PDF
-                                <span className="download-icon">📄</span>
+                            <button className="back-button" onClick={onBackToLanding}>
+                                Back
+                                <span className="back-icon">←</span>
                             </button>
-                            <button className="save-button">
-                                Save
-                                <span className="save-icon">💾</span>
-                            </button>
+                            <div className="right-buttons">
+                                <button className="download-button" onClick={handleDownload}>
+                                    Download PDF
+                                    <span className="download-icon">📄</span>
+                                </button>
+                                <button className="save-button">
+                                    Save
+                                    <span className="save-icon">💾</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
