@@ -150,7 +150,7 @@ function App() {
                 return showResumeForm ? (
                     <ResumeBuilder onBackToLanding={() => setShowResumeForm(false)} />
                 ) : (
-                    <ResumeBuilderLanding onStartBuilder={() => setShowResumeForm(true)} />
+                        <ResumeBuilderLanding onStartBuilder={() => setShowResumeForm(true)} />
                 );
             case 'home':
                 return (
@@ -171,7 +171,7 @@ function App() {
                 if (!analysisResults && !loading) {
                     return (
                         <div className="App initial-screen">
-                            <h1>ATS Resume Checker</h1>
+                            <h1 className="ats-heading" >ATS Resume Checker</h1>
                             <div
                                 className={`dropzone${dragActive ? ' dragover' : ''}`}
                                 onDrop={handleDrop}
@@ -192,7 +192,7 @@ function App() {
                                     style={{ display: 'none' }}
                                 />
                             </div>
-                            <label htmlFor="jobDescription">Paste Job Description:</label>
+                            <label htmlFor="jobDescription" >Paste Job Description:</label>
                             <textarea
                                 id="jobDescription"
                                 rows="5"

@@ -150,7 +150,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     width: 250px;
@@ -163,7 +162,7 @@
 
 .cta-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(0, 212, 170, 0.5);
+    box-shadow: 1px 8px 25px rgba(0, 212, 170, 0.4);
     background: linear-gradient(90deg, #0a86af 0%, #00d4aa 100%);
 }
 
@@ -187,21 +186,42 @@
     align-items: center;
     justify-content: center;
     padding: 40px;
-    background: radial-gradient(circle at 70% 50%, rgba(0, 212, 170, 0.05) 0%, transparent 50%);
+    background: none;
     perspective: 1200px;
 }
 
 .preview-container {
-    width: 100%;
-    max-width: 500px;
-    height: 100%;
-    max-height: 700px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transform-style: preserve-3d;
+    perspective: 1200px;
+    width: 100%;
+    max-width: 350px; /* Smaller max width */
+    height: 100%;
+    max-height: 500px; /* Smaller max height */
 }
 
+.rotating-resume {
+    width: 650px;   /* A4 aspect ratio, smaller size */
+    height: 650px;
+    border-radius: 0px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    object-fit: contain;
+    background: #fff;
+    animation: resume-rotate 5s ease-in-out infinite, floatResume 4s ease-in-out infinite alternate;
+    will-change: transform;
+}
+@keyframes resume-3d-rotate {
+    0% {
+        transform: perspective(1200px) rotateY(-12deg) rotateX(20deg) translateY(5px);
+    }
+    50% {
+        transform: perspective(1200px) rotateY(12deg) rotateX(-20deg) translateY(-16px);
+    }
+    100% {
+        transform: perspective(1200px) rotateY(-12deg) rotateX(20deg) translateY(-20px);
+    }
+}
 .preview-container:hover {
     animation-play-state: paused;
 }

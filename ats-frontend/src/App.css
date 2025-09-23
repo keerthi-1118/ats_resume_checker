@@ -37,7 +37,7 @@ body, html {
 
 .App.initial-screen {
     /* Remove beach image and use a clean, professional gradient */
-    background: linear-gradient(120deg, #f6d365 0%, #fda085 50%, #a1c4fd 100%);
+    background: linear-gradient(120deg, #302f2f 0%, #202020 50%, #232323 100%);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -48,11 +48,11 @@ body, html {
 }
 
 .initial-screen h1 {
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(11, 9, 9, 0.7);
     margin-bottom: 40px;
     font-size: 3rem;
-    font-weight: 800;
+    font-weight: 490;
     text-align: center;
 }
 
@@ -133,8 +133,8 @@ body, html {
 
 .initial-screen button:hover:not(:disabled) {
     background: linear-gradient(90deg, #0a86af 0%, #00d4aa 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .initial-screen button:disabled {
@@ -146,7 +146,7 @@ body, html {
 
 .initial-screen .error {
     color: #ff6b6b;
-    background: rgba(255, 107, 107, 0.1);
+    background: rgba(183, 147, 147, 0.1);
     padding: 15px 25px;
     border-radius: 8px;
     margin-top: 20px;
@@ -184,7 +184,7 @@ button {
     margin: 0 8px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: background 0.2s, box-shadow 0.2s;
+    transition: background 0.9s, box-shadow 0.5s;
 }
 button:disabled {
     background: #bdbdbd;
@@ -736,9 +736,9 @@ h1 {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 400px) {
     .initial-screen h1 {
-        font-size: 2rem;
+        font-size: 0.1rem;
         margin-bottom: 25px;
     }
     
@@ -763,4 +763,16 @@ h1 {
         font-size: 1.1rem;
         margin-bottom: 12px;
     }
+}
+.ats-heading{
+    margin: 0;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    background: linear-gradient(270deg, #00d4aa, #00bfff, #a259ff, #ffb347, #ff6ec4, #00d4aa);
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: brand-gradient-move 5s ease-in-out infinite alternate;
 }
