@@ -1,0 +1,8 @@
+flask
+gunicorn
+flask-cors
+spacy==3.6.1
+sentence-transformers
+scikit-learn
+PyPDF2
+python-docx
