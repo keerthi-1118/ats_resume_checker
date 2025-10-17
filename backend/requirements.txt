@@ -1,8 +1,0 @@
-Flask
-Flask-CORS
-PyPDF2
-python-docx
-spacy
-sentence-transformers
-scikit-learn
-gunicorn
