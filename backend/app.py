@@ -491,8 +491,4 @@ def resume_summary():
 # --- Flask App Run ---
 # ...existing code...
 if __name__ == "__main__":
-    import os
-    host = os.environ.get("HOST", "0.0.0.0")
-    port = int(os.environ.get("PORT", 5000))
-    debug = os.environ.get("FLASK_DEBUG", "False").lower() in ("1", "true")
-    app.run(host=host, port=port, debug=debug)
+    app.run(host="0.0.0.0", port=5000)
