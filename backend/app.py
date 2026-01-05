@@ -22,10 +22,25 @@ if not os.path.exists(UPLOAD_FOLDER):
 ALLOWED_EXTENSIONS = {'pdf', 'docx'}
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 
-# --- NLP Model Initialization ---
-nlp = spacy.load("en_core_web_sm")
-matcher = Matcher(nlp.vocab)
-skill_model = SentenceTransformer('all-MiniLM-L6-v2')
+# --- NLP Model Initialization (Lazy Loading) ---
+nlp = None
+matcher = None
+skill_model = None
+
+def get_nlp():
+    global nlp, matcher
+    if nlp is None:
+        nlp = spacy.load("en_core_web_sm")
+        matcher = Matcher(nlp.vocab)
+        # Re-add patterns to the new matcher instance
+        add_skill_patterns(matcher) 
+    return nlp, matcher
+
+def get_skill_model():
+    global skill_model
+    if skill_model is None:
+        skill_model = SentenceTransformer('all-MiniLM-L6-v2')
+    return skill_model
 
 # --- Global Skill Lists and Mappings ---
 COMMON_SKILLS = {
@@ -189,6 +204,7 @@ def normalize_skill(skill):
 
 def extract_skills_with_ner_and_patterns(text):
     """Extracts skills from text using spaCy's NER and custom patterns."""
+    nlp, matcher = get_nlp()
     doc = nlp(text.lower())
     skills = set()
 
@@ -202,10 +218,7 @@ def extract_skills_with_ner_and_patterns(text):
         if not is_noise_entity and (ent.label_ in potential_skill_labels or ent.text.lower() in COMMON_SKILLS):
             skills.add(ent.text.lower())
 
-    # --- Step 2: Pattern matching for skills ---
-    if "SKILL_PATTERN" in matcher:
-        matcher.remove("SKILL_PATTERN")
-
+def add_skill_patterns(matcher):
     patterns = [
         # Programming Languages (Core)
         [{'LOWER': 'javascript'}], [{'LOWER': 'python'}], [{'LOWER': 'java'}],
@@ -262,6 +275,12 @@ def extract_skills_with_ner_and_patterns(text):
         [{'LOWER': 'github'}] # Specific for GitHub in JD
     ]
     matcher.add("SKILL_PATTERN", patterns, on_match=None)
+
+    # --- Step 2: Pattern matching for skills ---
+    # Patterns are now added via add_skill_patterns during get_nlp()
+    # if "SKILL_PATTERN" in matcher:
+    #     matcher.remove("SKILL_PATTERN")
+
 
     matches = matcher(doc)
     for match_id, start, end in matches:
