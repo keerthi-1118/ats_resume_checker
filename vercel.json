@@ -1,0 +1,17 @@
+{
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/ats-frontend/$1"
+        }
+    ],
+    "builds": [
+        {
+            "src": "ats-frontend/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "build"
+            }
+        }
+    ]
+}
