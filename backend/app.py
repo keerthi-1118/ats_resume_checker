@@ -7,13 +7,20 @@ import docx
 from collections import Counter
 import re
 import spacy
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 from spacy.matcher import Matcher
 
 app = Flask(__name__)
 # Enable CORS for all routes and origins, allowing credentials and all methods
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": [
+                "https://ats-resume-checker-zoit.vercel.app"
+            ]
+        }
+    }
+)
 
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -26,7 +33,6 @@ app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 # --- NLP Model Initialization (Lazy Loading) ---
 nlp = None
 matcher = None
-skill_model = None
 
 def get_nlp():
     global nlp, matcher
@@ -36,12 +42,6 @@ def get_nlp():
         # Re-add patterns to the new matcher instance
         add_skill_patterns(matcher) 
     return nlp, matcher
-
-def get_skill_model():
-    global skill_model
-    if skill_model is None:
-        skill_model = SentenceTransformer('all-MiniLM-L6-v2')
-    return skill_model
 
 # --- Global Skill Lists and Mappings ---
 COMMON_SKILLS = {
@@ -471,6 +471,10 @@ def extract_resume_summary(text):
     return summary
 
 # --- Flask Routes ---
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'ok'}), 200
+
 @app.route('/', methods=['GET'])
 def health_check():
     return jsonify({'status': 'healthy', 'message': 'ATS Backend is running'}), 200
@@ -522,16 +526,9 @@ def resume_summary():
                 if os.path.exists(filepath):
                     os.remove(filepath)
 
-            # Lazy load model here as well
-            skill_model = get_skill_model()
-            
-            # Simple summarization logic (improve if needed)
+            # Extract key info for summary (removed SBERT, relying on heuristics)
+            skills = extract_skills_with_ner_and_patterns(text) # Returns a set directly
             summary_text = f"Resume contains {len(text.split())} words. "
-            nlp, _ = get_nlp()
-            doc = nlp(text)
-            
-            # Extract key info for summary
-            skills = extract_skills_with_ner_and_patterns(text)['skills']
             summary_text += f"Identified {len(skills)} skills including: {', '.join(list(skills)[:5])}."
 
             return jsonify({'summary': summary_text}), 200
@@ -542,7 +539,4 @@ def resume_summary():
 
 
 
-# --- Flask App Run ---
-# ...existing code...
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+

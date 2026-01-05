@@ -110,6 +110,7 @@ function App() {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+                timeout: 60000, // 60 seconds timeout
             });
             setAnalysisResults(response.data);
             setLoading(false);
@@ -135,6 +136,7 @@ function App() {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+                timeout: 60000, // 60 seconds timeout
             });
             setSummary(response.data.summary);
             setSummaryLoading(false);
