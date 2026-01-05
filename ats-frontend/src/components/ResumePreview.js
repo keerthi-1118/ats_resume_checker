@@ -1,3 +1,4 @@
+
 // src/components/ResumePreview.js
 import React from 'react';
 import './ResumePreview.css'; // Create this CSS file for preview styling
@@ -88,5 +89,4 @@ function ResumePreview({ resumeData }) {
         </div>
     );
 }
-
 export default ResumePreview;

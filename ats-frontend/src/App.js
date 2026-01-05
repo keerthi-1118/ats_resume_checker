@@ -4,6 +4,8 @@ import './App.css';
 import ResumeBuilder from './components/ResumeBuilder';
 import ResumeBuilderLanding from './components/ResumeBuilderLanding';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
 function App() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [jobDescription, setJobDescription] = useState('');
@@ -15,9 +17,9 @@ function App() {
     const [summaryLoading, setSummaryLoading] = useState(false);
     const [dragActive, setDragActive] = useState(false);
     const [activeTab, setActiveTab] = useState('analysis');
-    
+
     // New state for score animation
-    const [displayedScore, setDisplayedScore] = useState(0); 
+    const [displayedScore, setDisplayedScore] = useState(0);
     // New state for current page
     const [currentPage, setCurrentPage] = useState('ats-analyze');
     // New state for resume builder flow
@@ -104,7 +106,7 @@ function App() {
         formData.append('job_description', jobDescription);
 
         try {
-            const response = await axios.post('http://127.0.0.1:5000/analyze', formData, {
+            const response = await axios.post(`${API_BASE_URL}/analyze`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -129,7 +131,7 @@ function App() {
         const formData = new FormData();
         formData.append('file', selectedFile);
         try {
-            const response = await axios.post('http://127.0.0.1:5000/resume_summary', formData, {
+            const response = await axios.post(`${API_BASE_URL}/resume_summary`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -150,7 +152,7 @@ function App() {
                 return showResumeForm ? (
                     <ResumeBuilder onBackToLanding={() => setShowResumeForm(false)} />
                 ) : (
-                        <ResumeBuilderLanding onStartBuilder={() => setShowResumeForm(true)} />
+                    <ResumeBuilderLanding onStartBuilder={() => setShowResumeForm(true)} />
                 );
             case 'home':
                 return (
@@ -160,7 +162,7 @@ function App() {
                         <button onClick={() => handleNavigation('ats-analyze')}>
                             Go to ATS Analyze
                         </button>
-                        <button style={{marginLeft: '16px'}} onClick={() => handleNavigation('resume-builder')}>
+                        <button style={{ marginLeft: '16px' }} onClick={() => handleNavigation('resume-builder')}>
                             Resume Builder
                         </button>
                     </div>
@@ -200,7 +202,7 @@ function App() {
                                 value={jobDescription}
                                 onChange={handleDescriptionChange}
                             />
-                            <div style={{display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '16px'}}>
+                            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '16px' }}>
                                 <button onClick={handleAnalyze} disabled={loading}>
                                     {loading ? 'Analyzing...' : 'Analyze Resume'}
                                 </button>
@@ -429,21 +431,21 @@ function App() {
                                                         </div>
                                                         {/* Fallback if no specific summary data is found */}
                                                         {(!summary.name && !summary.email && !summary.phone &&
-                                                        (!mappedWork || mappedWork.length === 0) &&
-                                                        (!mappedProjects || mappedProjects.length === 0) &&
-                                                        (!mappedCerts || mappedCerts.length === 0)) && (
-                                                            <p>No detailed summary data extracted. This may happen if the resume format is highly unstructured.</p>
-                                                        )}
-                                                        <div style={{display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '24px'}}>
-                                                            <button onClick={handleAnalyze}>
-                                                                Analyze Resume
+                                                            (!mappedWork || mappedWork.length === 0) &&
+                                                            (!mappedProjects || mappedProjects.length === 0) &&
+                                                            (!mappedCerts || mappedCerts.length === 0)) && (
+                                                                <p>No detailed summary data extracted. This may happen if the resume format is highly unstructured.</p>
+                                                            )}
+                                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px', marginTop: '24px' }}>
+                                                            {/* <button onClick={handleAnalyze}>
+                                                                Back
+                                                            </button> */}
+                                                            <button onClick={() => handleNavigation('ats-analyze')}>
+                                                                Back
                                                             </button>
-                                                            <button onClick={() => handleNavigation('resume-builder')}>
-                                                                Resume Builder
-                                                            </button>
-                                                            <button>
+                                                            {/* <button>
                                                                 Download
-                                                            </button>
+                                                            </button> */}
                                                         </div>
                                                     </div>
                                                 );

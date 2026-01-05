@@ -696,15 +696,35 @@ const ResumeBuilder = ({ onBackToLanding }) => {
                             <div className="preview-header">
                                 <h3 className="preview-name">{formData.contact.fullName || 'Your Name'}</h3>
                                 <div className="preview-contact">
-                                                                           <p>
-                                           {formData.contact.phone && <span className="contact-item">{formData.contact.phone}</span>}
-                                           {formData.contact.phone && formData.contact.email && <span className="contact-separator"> | </span>}
-                                           {formData.contact.email && <span className="contact-item">{formData.contact.email}</span>}
-                                           {formData.contact.email && formData.contact.linkedin && <span className="contact-separator"> | </span>}
-                                           {formData.contact.linkedin && <span className="contact-item">{isUrl(formData.contact.linkedin) ? <a href={formData.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> : formData.contact.linkedin}</span>}
-                                           {formData.contact.linkedin && formData.contact.github && <span className="contact-separator"> | </span>}
-                                           {formData.contact.github && <span className="contact-item">{isUrl(formData.contact.github) ? <a href={formData.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a> : formData.contact.github}</span>}
-                                       </p>
+                                    <p>
+                                        {formData.contact.phone && <span className="contact-item">{formData.contact.phone}</span>}
+                                        {formData.contact.phone && formData.contact.email && <span className="contact-separator"> | </span>}
+                                        {formData.contact.email && (
+                                            <span className="contact-item">
+                                                <a href={`mailto:${formData.contact.email}`}>Gmail</a>
+                                            </span>
+                                        )}
+                                        {formData.contact.email && formData.contact.linkedin && <span className="contact-separator"> | </span>}
+                                        {formData.contact.linkedin && (
+                                            <span className="contact-item">
+                                                {isUrl(formData.contact.linkedin) ? (
+                                                    <a href={formData.contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                                ) : (
+                                                    'LinkedIn'
+                                                )}
+                                            </span>
+                                        )}
+                                        {formData.contact.linkedin && formData.contact.github && <span className="contact-separator"> | </span>}
+                                        {formData.contact.github && (
+                                            <span className="contact-item">
+                                                {isUrl(formData.contact.github) ? (
+                                                    <a href={formData.contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                                                ) : (
+                                                    'GitHub'
+                                                )}
+                                            </span>
+                                        )}
+                                    </p>
                                     {(formData.contact.portfolio || formData.contact.blogs) && (
                                         <p>
                                             {formData.contact.portfolio && <span className="contact-item">{isUrl(formData.contact.portfolio) ? <a href={formData.contact.portfolio} target="_blank" rel="noopener noreferrer">Portfolio</a> : formData.contact.portfolio}</span>}
