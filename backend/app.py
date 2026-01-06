@@ -530,12 +530,10 @@ def resume_summary():
                 if os.path.exists(filepath):
                     os.remove(filepath)
 
-            # Extract key info for summary (removed SBERT, relying on heuristics)
-            skills = extract_skills_with_ner_and_patterns(text) # Returns a set directly
-            summary_text = f"Resume contains {len(text.split())} words. "
-            summary_text += f"Identified {len(skills)} skills including: {', '.join(list(skills)[:5])}."
-
-            return jsonify({'summary': summary_text}), 200
+            # Extract structured summary using the helper function
+            summary_data = extract_resume_summary(text)
+            
+            return jsonify({'summary': summary_data}), 200
         return jsonify({'error': 'Invalid file format'}), 400
     except Exception as e:
         print(f"Error in resume_summary: {str(e)}")
