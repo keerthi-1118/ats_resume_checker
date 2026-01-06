@@ -16,7 +16,8 @@ CORS(
     resources={
         r"/*": {
             "origins": [
-                "https://ats-resume-checker-zoit.vercel.app"
+                "https://ats-resume-checker-zoit.vercel.app",
+                "http://localhost:3000"
             ]
         }
     }
@@ -203,21 +204,6 @@ def normalize_skill(skill):
         return "react native"
     return skill
 
-def extract_skills_with_ner_and_patterns(text):
-    """Extracts skills from text using spaCy's NER and custom patterns."""
-    nlp, matcher = get_nlp()
-    doc = nlp(text.lower())
-    skills = set()
-
-    # --- Step 1: NER based extraction ---
-    potential_skill_labels = ["SKILL", "TECHNOLOGY", "PRODUCT", "ORG", "PERSON", "GPE", "NORP", "FAC", "LOC", "MISC"]
-    for ent in doc.ents:
-        is_noise_entity = (
-            (len(ent.text.split()) == 1 and len(ent.text) <= 2 and ent.text.lower() not in WHOLE_WORD_SKILLS and ent.text.lower() not in COMMON_SKILLS) or
-            (ent.label_ in ["PERSON", "ORG", "GPE", "DATE", "CARDINAL", "ORDINAL"] and ent.text.lower() not in COMMON_SKILLS)
-        )
-        if not is_noise_entity and (ent.label_ in potential_skill_labels or ent.text.lower() in COMMON_SKILLS):
-            skills.add(ent.text.lower())
 
 def add_skill_patterns(matcher):
     patterns = [
@@ -276,6 +262,24 @@ def add_skill_patterns(matcher):
         [{'LOWER': 'github'}] # Specific for GitHub in JD
     ]
     matcher.add("SKILL_PATTERN", patterns, on_match=None)
+
+def extract_skills_with_ner_and_patterns(text):
+    """Extracts skills from text using spaCy's NER and custom patterns."""
+    nlp, matcher = get_nlp()
+    doc = nlp(text.lower())
+    skills = set()
+
+    # --- Step 1: NER based extraction ---
+    potential_skill_labels = ["SKILL", "TECHNOLOGY", "PRODUCT", "ORG", "PERSON", "GPE", "NORP", "FAC", "LOC", "MISC"]
+    for ent in doc.ents:
+        is_noise_entity = (
+            (len(ent.text.split()) == 1 and len(ent.text) <= 2 and ent.text.lower() not in WHOLE_WORD_SKILLS and ent.text.lower() not in COMMON_SKILLS) or
+            (ent.label_ in ["PERSON", "ORG", "GPE", "DATE", "CARDINAL", "ORDINAL"] and ent.text.lower() not in COMMON_SKILLS)
+        )
+        if not is_noise_entity and (ent.label_ in potential_skill_labels or ent.text.lower() in COMMON_SKILLS):
+            skills.add(ent.text.lower())
+
+
 
     # --- Step 2: Pattern matching for skills ---
     # Patterns are now added via add_skill_patterns during get_nlp()
@@ -540,3 +544,7 @@ def resume_summary():
 
 
 
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
