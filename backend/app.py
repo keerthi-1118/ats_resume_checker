@@ -393,84 +393,203 @@ def analyze_resume(text, job_description=None):
     return results
 
 # --- Resume Summary Extraction Helper ---
+def _is_section_header(line, keywords):
+    """Return True when a stripped line is purely a section heading.
+    A section heading is short (<= 6 words), matches one of the keywords,
+    and contains no sentence-level punctuation (commas, periods mid-line, etc.)
+    that would indicate it's a prose sentence.
+    """
+    stripped = line.strip()
+    lower = stripped.lower()
+    if not stripped:
+        return False
+    # Must be <= 6 words (headings are short)
+    if len(stripped.split()) > 6:
+        return False
+    # Must contain at least one of the keywords
+    if not any(kw in lower for kw in keywords):
+        return False
+    # Prose sentences usually have commas or mid-sentence periods
+    if ',' in stripped:
+        return False
+    # If it ends with a colon it's definitely a heading
+    if stripped.endswith(':'):
+        return True
+    # If it's all uppercase or title-case and short it's a heading
+    if stripped.isupper() or stripped.istitle():
+        return True
+    # Otherwise accept it if it's very short (<=3 words)
+    return len(stripped.split()) <= 3
+
+
 def extract_resume_summary(text):
     summary = {}
-    # Name: Assume the first line or first capitalized phrase (very basic)
+
     lines = text.split('\n')
+
+    # Collapse all whitespace so emails split across PDF lines are joined
+    collapsed = re.sub(r'\s+', ' ', text)
+
+    # --- Name ---
+    # Use the original lines so we don't pick up merged garbage from collapsed text
+    SKIP_HEADERS = {
+        'experience', 'education', 'skills', 'projects', 'certifications',
+        'summary', 'objective', 'work experience', 'about', 'contact',
+        'profile', 'references', 'languages', 'interests', 'hobbies'
+    }
     name = None
     for line in lines:
-        if line.strip() and len(line.strip().split()) <= 4 and line.strip()[0].isupper():
-            name = line.strip()
+        stripped = line.strip()
+        if (stripped
+                and len(stripped.split()) <= 4
+                and stripped[0].isupper()
+                and not any(ch.isdigit() for ch in stripped)
+                and stripped.lower() not in SKIP_HEADERS):
+            name = stripped
             break
     summary['name'] = name
 
-    # Clean up text to remove line breaks in the middle of words (especially for emails)
-    cleaned_text = re.sub(r'(?<=\w)[\r\n]+(?=\w)', '', text)
+    # --- Email ---
+    # Find e-mail on its own line first (most reliable) then fall back to collapsed text.
+    # The line-by-line approach avoids picking up a stray label char (e.g. the 'p'
+    # from "Phone" that gets merged into the email in collapsed mode).
+    EMAIL_RE = re.compile(r'[a-zA-Z0-9][a-zA-Z0-9_.+\-]*@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,}')
+    email_found = None
+    for line in lines:
+        m = EMAIL_RE.search(line)
+        if m:
+            email_found = m.group(0)
+            break
+    if not email_found:
+        # fallback: search collapsed but require the match to start after a space or start
+        m = re.search(r'(?<!\w)' + EMAIL_RE.pattern, collapsed)
+        if m:
+            email_found = m.group(0)
+    summary['email'] = email_found
 
-    # Improved email regex: requires a TLD (e.g., .com, .in, .org, etc.)
-    email_matches = re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', cleaned_text)
-    summary['email'] = email_matches[0] if email_matches else None
+    # --- Phone ---
+    phone_match = re.search(
+        r'(\+?\d{1,3}[\s\-]?)?(\(?\d{3}\)?[\s\-]?)?\d{3}[\s\-]?\d{4}',
+        text
+    )
+    summary['phone'] = phone_match.group(0).strip() if phone_match else None
 
-    # Phone
-    phone_match = re.search(r'(\+?\d{1,3}[\s-]?)?(\(?\d{3}\)?[\s-]?)?\d{3}[\s-]?\d{4}', text)
-    summary['phone'] = phone_match.group(0) if phone_match else None
+    # --- LinkedIn / GitHub / Portfolio ---
+    linkedin_match = re.search(
+        r'(?:https?://)?(?:www\.)?linkedin\.com/in/[a-zA-Z0-9_\-]+',
+        collapsed, re.IGNORECASE
+    )
+    summary['linkedin'] = linkedin_match.group(0) if linkedin_match else None
 
-    # Address: Look for lines with numbers and common address words
+    github_match = re.search(
+        r'(?:https?://)?(?:www\.)?github\.com/[a-zA-Z0-9_\-]+',
+        collapsed, re.IGNORECASE
+    )
+    summary['github'] = github_match.group(0) if github_match else None
+
+    portfolio_match = re.search(
+        r'(?:https?://)[a-zA-Z0-9_\-]+\.[a-zA-Z]{2,}(?:/[^\s]*)?',
+        collapsed, re.IGNORECASE
+    )
+    # Only store portfolio if it's not already linkedin/github
+    if portfolio_match:
+        url = portfolio_match.group(0)
+        if 'linkedin' not in url.lower() and 'github' not in url.lower():
+            summary['portfolio'] = url
+        else:
+            summary['portfolio'] = None
+    else:
+        summary['portfolio'] = None
+
+    # --- Address ---
     address = None
     for line in lines:
-        if any(word in line.lower() for word in ['street', 'st.', 'road', 'rd.', 'ave', 'block', 'city', 'state', 'zip', 'pincode', 'village', 'district']) and any(char.isdigit() for char in line):
+        if any(word in line.lower() for word in [
+            'street', 'st.', 'road', 'rd.', 'ave', 'block',
+            'city', 'state', 'zip', 'pincode', 'village', 'district'
+        ]) and any(char.isdigit() for char in line):
             address = line.strip()
             break
     summary['address'] = address
 
-    # Projects and Tech Stack
+    # ----------------------------------------------------------------
+    # Section parsing — uses _is_section_header() so prose sentences
+    # that merely mention "experience" / "project" never open a section.
+    # Pattern: when we detect a header we set the flag and SKIP that line
+    #          (continue before any append). When we detect the NEXT
+    #          section header we close the current section and also skip
+    #          that line. Content lines are only added when we're inside
+    #          the section AND the line is non-empty AND not a header.
+    # ----------------------------------------------------------------
+    EXP_HDRS  = ['experience', 'work experience', 'employment', 'work history', 'internship']
+    PROJ_HDRS = ['project', 'projects', 'personal projects', 'key projects']
+    CERT_HDRS = ['certification', 'certifications', 'certificate', 'certificates',
+                 'courses', 'awards', 'achievements']
+    ANY_SECTION = EXP_HDRS + PROJ_HDRS + CERT_HDRS + [
+        'education', 'skills', 'technical skills', 'summary', 'objective',
+        'about', 'languages', 'hobbies', 'interests', 'references', 'volunteer'
+    ]
+
+    # --- Projects ---
     projects = []
     tech_stack = []
     in_projects = False
-    for i, line in enumerate(lines):
-        if 'project' in line.lower() and not in_projects:
-            in_projects = True
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            in_projects = False if in_projects and not stripped else in_projects
             continue
-        if in_projects:
-            if line.strip() == '' or any(section in line.lower() for section in ['experience', 'education', 'certification', 'work']):
-                in_projects = False
-                continue
-            # Exclude section headers or repeated 'Projects' lines
-            if line.strip().lower() in ['projects', 'project']:
-                continue
-            projects.append(line.strip())
-            # Extract tech stack keywords from the line
-            for skill in COMMON_SKILLS:
-                if skill.lower() in line.lower() and skill not in tech_stack:
-                    tech_stack.append(skill)
-    summary['projects'] = [p for p in projects if p]
+        lower = stripped.lower()
+        if not in_projects:
+            if _is_section_header(stripped, PROJ_HDRS):
+                in_projects = True
+            continue  # skip every line until we're inside a section
+        # ---- we ARE inside projects ----
+        if _is_section_header(stripped, ANY_SECTION):
+            in_projects = False
+            continue  # skip this header
+        projects.append(stripped)
+        for skill in COMMON_SKILLS:
+            if skill.lower() in lower and skill not in tech_stack:
+                tech_stack.append(skill)
+    summary['projects'] = projects
     summary['tech_stack'] = tech_stack
 
-    # Work Experience
+    # --- Work Experience ---
     work_exp = []
     in_exp = False
-    for i, line in enumerate(lines):
-        if 'experience' in line.lower() or 'work experience' in line.lower():
-            in_exp = True
-        if in_exp:
-            if line.strip() == '' or any(section in line.lower() for section in ['project', 'education', 'certification']):
-                in_exp = False
-                continue
-            work_exp.append(line.strip())
-    summary['work_experience'] = [w for w in work_exp if w]
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if not in_exp:
+            if _is_section_header(stripped, EXP_HDRS):
+                in_exp = True
+            continue  # skip every line until we enter the section
+        # ---- we ARE inside work experience ----
+        if _is_section_header(stripped, ANY_SECTION):
+            in_exp = False
+            continue  # skip this header
+        work_exp.append(stripped)
+    summary['work_experience'] = work_exp
 
-    # Certifications
+    # --- Certifications ---
     certifications = []
     in_cert = False
-    for i, line in enumerate(lines):
-        if 'certification' in line.lower() or 'certificate' in line.lower():
-            in_cert = True
-        if in_cert:
-            if line.strip() == '' or any(section in line.lower() for section in ['project', 'education', 'experience', 'work']):
-                in_cert = False
-                continue
-            certifications.append(line.strip())
-    summary['certifications'] = [c for c in certifications if c]
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if not in_cert:
+            if _is_section_header(stripped, CERT_HDRS):
+                in_cert = True
+            continue  # skip every line until we enter the section
+        # ---- we ARE inside certifications ----
+        if _is_section_header(stripped, ANY_SECTION):
+            in_cert = False
+            continue  # skip this header
+        certifications.append(stripped)
+    summary['certifications'] = certifications
 
     return summary
 
