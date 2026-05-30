@@ -20,48 +20,9 @@ The project uses modern web technologies with React.js on the frontend and Pytho
 - Exports resumes directly to PDF format
   
 **Live Application:** https://ats-resume-checker-zoit.vercel.app/
----
-
-## System Architecture
-
-```
-                    [ React Frontend ]
-                    (localhost:3000)
-                            |
-        ┌───────────────────┼───────────────────┐
-        |                   |                   |
-        v                   v                   v
-  [ Home Page ]      [ Analyzer ]        [ Builder ]
-        |                   |                   |
-        └───────────────────┼───────────────────┘
-                            |
-                    [ Axios HTTP ]
-                            |
-        ┌───────────────────┼───────────────────┐
-        |                   |                   |
-        v                   v                   v
-  [ /analyze ]     [ /resume_summary ]  [ /health ]
-        |                   |                   |
-        └───────────────────┼───────────────────┘
-                            |
-                    [ Flask Backend ]
-                    (localhost:5000)
-                            |
-        ┌───────────────────┼───────────────────┐
-        |                   |                   |
-        v                   v                   v
-  [ File Parser ]    [ NLP Pipeline ]    [ Data Extract ]
-  - PyPDF2           - spaCy NER         - Contact Info
-  - python-docx      - Pattern Match     - Sections
-                     - Normalize         - Action Verbs
-                            |
-                            v
-                    [ Results JSON ]
-                            |
-                    [ Frontend Display ]
-```
 
 ---
+
 
 ## Features
 
@@ -108,6 +69,47 @@ The project uses modern web technologies with React.js on the frontend and Pytho
 - **PDF Export Functionality:** Generate professional PDF resumes directly from the browser using client-side processing, with no server-side storage required.
 
 - **ATS-Optimized Formatting:** Built-in formatting ensures resumes bypass ATS scanning without special characters or complex styling.
+
+---
+
+## System Architecture
+
+```
+                    [ React Frontend ]
+                    (localhost:3000)
+                            |
+        ┌───────────────────┼───────────────────┐
+        |                   |                   |
+        v                   v                   v
+  [ Home Page ]      [ Analyzer ]        [ Builder ]
+        |                   |                   |
+        └───────────────────┼───────────────────┘
+                            |
+                    [ Axios HTTP ]
+                            |
+        ┌───────────────────┼───────────────────┐
+        |                   |                   |
+        v                   v                   v
+  [ /analyze ]     [ /resume_summary ]  [ /health ]
+        |                   |                   |
+        └───────────────────┼───────────────────┘
+                            |
+                    [ Flask Backend ]
+                    (localhost:5000)
+                            |
+        ┌───────────────────┼───────────────────┐
+        |                   |                   |
+        v                   v                   v
+  [ File Parser ]    [ NLP Pipeline ]    [ Data Extract ]
+  - PyPDF2           - spaCy NER         - Contact Info
+  - python-docx      - Pattern Match     - Sections
+                     - Normalize         - Action Verbs
+                            |
+                            v
+                    [ Results JSON ]
+                            |
+                    [ Frontend Display ]
+```
 
 ---
 
