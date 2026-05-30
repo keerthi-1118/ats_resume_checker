@@ -6,6 +6,26 @@ A comprehensive web application designed to help job seekers optimize their resu
 
 ---
 
+## Project Overview
+
+**ATS Resume Checker & Builder** is a full-stack web application built to address the critical challenge of getting resumes past Applicant Tracking Systems. The application consists of two core modules:
+
+**1. ATS Resume Analyzer** - Leverages advanced Natural Language Processing (NLP) to compare your resume against job descriptions, providing detailed insights on skill matching, missing qualifications, and overall ATS compatibility. It calculates a comprehensive matching score based on hard skills analysis and semantic similarity.
+
+**2. Resume Builder** - Enables users to create professional, ATS-optimized resumes from scratch using an intuitive multi-step form with real-time preview. The builder generates downloadable PDF resumes that are formatted to pass ATS screening.
+
+The project uses modern web technologies with React.js on the frontend and Python/Flask on the backend, integrated with spaCy for advanced NLP processing, PyPDF2 and python-docx for document parsing, and sentence-transformers for semantic analysis.
+
+**Key Capabilities:**
+- Analyzes resumes against job descriptions using spaCy NER and pattern matching
+- Calculates matching scores based on skill extraction and normalization
+- Detects action verbs and resume sections for content optimization
+- Extracts structured resume information (contact details, experience, projects, certifications)
+- Builds ATS-compliant resumes with live preview functionality
+- Exports resumes directly to PDF format
+
+---
+
 ## System Architecture
 
 ```
@@ -51,23 +71,47 @@ A comprehensive web application designed to help job seekers optimize their resu
 
 ### ATS Resume Checker
 
-- **Resume Analysis:** Upload your resume (PDF or DOCX) and a job description to receive instant comprehensive analysis.
-- **Matching Score:** Obtain an overall percentage score indicating how well your resume aligns with the job description.
-- **Detailed Skill Comparison:**
-  - **Matching Skills:** View a detailed list of skills present in your resume that are explicitly required by the job description.
-  - **Missing Skills:** Identify key skills listed in the job description that are absent from your resume.
-  - **Additional Skills:** Discover skills in your resume that exceed job requirements but may still be valuable.
-- **Semantic Similarity Analysis:** Receive a score indicating the conceptual overlap between your resume and job description.
-- **Action Verb Detection:** Identify strong action verbs used throughout your resume.
-- **Section Identification:** Confirms standard resume sections found in your document.
-- **Intuitive User Interface:** Modern UI with tabbed navigation, animated score display, and clear visual indicators for matched and missing skills.
+- **Intelligent Resume Analysis:** Upload resumes in PDF or DOCX format alongside job descriptions to receive automated ATS compatibility analysis powered by advanced NLP.
+
+- **Skill Matching Engine:** Extracts and normalizes skills from both resume and job description, providing detailed comparison of:
+  - **Matching Skills:** Hard skills explicitly present in both documents
+  - **Missing Skills:** Critical requirements from job description absent in resume
+  - **Extra Skills:** Resume skills exceeding job requirements (valuable for profile enhancement)
+
+- **ATS Compatibility Scoring:** Generates an overall percentage score (0-100%) indicating resume alignment with job requirements, calculated based on matched hard skills against required qualifications.
+
+- **Resume Content Analysis:**
+  - Detects standard resume sections (Education, Experience, Skills, Projects, Certifications)
+  - Identifies action verbs used in work descriptions for impact assessment
+  - Extracts structured resume information for comprehensive review
+
+- **Structured Resume Summary:** Automatically extracts and organizes:
+  - Contact information (Name, Email, Phone, LinkedIn, GitHub, Portfolio)
+  - Work experience and responsibilities
+  - Projects with identified technology stack
+  - Certifications and credentials
+
+- **User-Friendly Interface:** Tabbed navigation between analysis results and resume summary with animated score gauge and visual indicators for skill matching status.
 
 ### Resume Builder
 
-- **Multi-Step Form:** Guided, intuitive multi-page form for entering all resume details (Contact, Summary, Education, Experience, Projects, Skills, Certificates, Languages).
-- **Live Preview:** Real-time, ATS-compliant preview of your resume as you input information.
-- **Structured Data Entry:** Ensures comprehensive capture of project tech stacks, work experience responsibilities, and certification details.
-- **PDF Export:** Generate and download your professional resume as a PDF directly from the browser.
+- **Multi-Step Resume Creation:** Guided form-based approach with dedicated sections for:
+  - Contact Information (Name, Email, Phone, LinkedIn, GitHub, Portfolio)
+  - Professional Summary
+  - Education (Institution, Degree, Graduation Date)
+  - Work Experience (Company, Position, Responsibilities)
+  - Projects (Title, Description, Technology Stack)
+  - Technical Skills (with categorization support)
+  - Certifications (Name, Issuer, Date Earned)
+  - Languages (Language, Proficiency Level)
+
+- **Real-Time Live Preview:** Instant visual feedback as you enter information, showing exactly how your resume will appear with ATS-friendly formatting.
+
+- **Dynamic Entry Management:** Add or remove multiple entries for education, experience, projects, and certifications as needed.
+
+- **PDF Export Functionality:** Generate professional PDF resumes directly from the browser using client-side processing, with no server-side storage required.
+
+- **ATS-Optimized Formatting:** Built-in formatting ensures resumes bypass ATS scanning without special characters or complex styling.
 
 ---
 
