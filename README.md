@@ -8,252 +8,41 @@ A comprehensive web application designed to help job seekers optimize their resu
 
 ## System Architecture
 
-### Architecture Overview
-
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         Frontend (React.js)                              │
-│                    Running on: http://localhost:3000                     │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                      Home/Landing Page                          │   │
-│  │   ┌──────────────────────────┐  ┌──────────────────────────┐   │   │
-│  │   │   Resume Analyzer        │  │  Resume Builder          │   │   │
-│  │   │   - File Upload (PDF/    │  │  - Multi-Step Form       │   │   │
-│  │   │     DOCX)                │  │  - Live Preview          │   │   │
-│  │   │   - Job Description      │  │  - PDF Download          │   │   │
-│  │   │     Input                │  │                          │   │   │
-│  │   │   - Analysis Trigger     │  │                          │   │   │
-│  │   └──────────────────────────┘  └──────────────────────────┘   │   │
-│  │                                                                   │   │
-│  │  ┌──────────────────────────────────────────────────────────┐   │   │
-│  │  │            Results Dashboard                            │   │   │
-│  │  │  - ATS Analysis Tab                                     │   │   │
-│  │  │    • Matching Score (Animated Gauge)                    │   │   │
-│  │  │    • Matching Skills                                    │   │   │
-│  │  │    • Missing Skills                                     │   │   │
-│  │  │    • Action Verbs Detected                              │   │   │
-│  │  │    • Sections Found                                     │   │   │
-│  │  │  - Resume Summary Tab                                  │   │   │
-│  │  │    • Contact Information                                │   │   │
-│  │  │    • Work Experience                                    │   │   │
-│  │  │    • Projects & Tech Stack                              │   │   │
-│  │  │    • Certifications                                     │   │   │
-│  │  └──────────────────────────────────────────────────────────┘   │   │
-│  │                                                                   │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                                                           │
-│  ┌─────────────────────────────────────────────────────────────────┐    │
-│  │          Communication Layer (Axios HTTP Client)              │    │
-│  │  • POST /analyze                                              │    │
-│  │  • POST /resume_summary                                       │    │
-│  │  • Response Handling & Error Management                       │    │
-│  └─────────────────────────────────────────────────────────────────┘    │
-│                                                                           │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    ↕
-                        HTTP / JSON (CORS Enabled)
-                                    ↕
-┌─────────────────────────────────────────────────────────────────────────┐
-│                      Backend (Python/Flask)                              │
-│                   Running on: http://127.0.0.1:5000                      │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                    Flask API Routes                             │   │
-│  │  • POST /analyze              (Resume & JD Analysis)            │   │
-│  │  • POST /resume_summary       (Extract Resume Information)      │   │
-│  │  • GET /health                (Health Check)                    │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                    ↓                                     │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │               File Processing Layer                             │   │
-│  │  • PyPDF2: Extract text from PDF files                         │   │
-│  │  • python-docx: Extract text from DOCX files                  │   │
-│  │  • Temporary file storage in /uploads directory               │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                    ↓                                     │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                NLP Processing Pipeline                          │   │
-│  │                                                                  │   │
-│  │  ┌──────────────────────────────────────────────────────────┐  │   │
-│  │  │  Step 1: Named Entity Recognition (spaCy NER)           │  │   │
-│  │  │  • Identifies potential skills using pre-trained model   │  │   │
-│  │  │  • Filters out noise (person names, locations, etc.)    │  │   │
-│  │  └──────────────────────────────────────────────────────────┘  │   │
-│  │                            ↓                                    │   │
-│  │  ┌──────────────────────────────────────────────────────────┐  │   │
-│  │  │  Step 2: Pattern Matching (spaCy Matcher)               │  │   │
-│  │  │  • Multi-token pattern recognition                       │  │   │
-│  │  │  • Matches: "React Native", "Data Structures", etc.     │  │   │
-│  │  │  • Handles variations: "REST API", "Restful API"       │  │   │
-│  │  └──────────────────────────────────────────────────────────┘  │   │
-│  │                            ↓                                    │   │
-│  │  ┌──────────────────────────────────────────────────────────┐  │   │
-│  │  │  Step 3: Skill Normalization                            │  │   │
-│  │  │  • Standardizes skill names using SKILL_MAPPING         │  │   │
-│  │  │  • Maps variations to canonical names                    │  │   │
-│  │  │  • Filters against COMMON_SKILLS dictionary             │  │   │
-│  │  └──────────────────────────────────────────────────────────┘  │   │
-│  │                                                                  │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                    ↓                                     │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │            Semantic Analysis & Scoring                          │   │
-│  │                                                                  │   │
-│  │  • sentence-transformers: Generate embeddings                  │   │
-│  │  • Cosine Similarity (scikit-learn): Calculate semantic match  │   │
-│  │  • Overall Score Calculation:                                  │   │
-│  │    - Hard skills matching: (matched_hard / required_hard) *100│   │
-│  │    - Fallback: (matched_all / required_all) * 100             │   │
-│  │                                                                  │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                    ↓                                     │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │           Resume Information Extraction                         │   │
-│  │  • Extract: Name, Email, Phone, LinkedIn, GitHub              │  │   │
-│  │  • Parse: Work Experience, Projects, Certifications            │  │   │
-│  │  • Detect: Action Verbs, Resume Sections                       │  │   │
-│  │  • Tech Stack: Identify technologies used in projects          │  │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                    ↓                                     │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                  Results Compilation                            │   │
-│  │  Return JSON with:                                              │   │
-│  │  • Matching skills, missing skills, extra skills              │   │
-│  │  • Overall score percentage                                    │   │
-│  │  • Extracted resume information                                │   │
-│  │  • Sections found and action verbs                             │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                                                           │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Data Flow Diagram
-
-### Resume Analysis Flow
-
-```
-User Action                    Frontend                Backend
-    ↓                            ↓                        ↓
-Upload Resume               [React State]          [File Upload]
-    ↓                            ↓                        ↓
-Paste Job Description      [jobDescription]    [Form Data]
-    ↓                            ↓                        ↓
-Click "Analyze"          [handleAnalyze]    [/analyze route]
-    ↓                            ↓                        ↓
-                        [FormData POST]     [Extract Text]
-                            ↓                        ↓
-                     [API_BASE_URL/      [NER + Patterns]
-                      analyze]                 ↓
-                            ↓          [Normalize Skills]
-                                             ↓
-                                     [Compare with JD]
-                                             ↓
-                                       [Calculate Score]
-                                             ↓
-                        [JSON Response] ← [Return Results]
-                            ↓
-                     [setAnalysisResults]
-                            ↓
-                    [renderAnalysisTab()]
-                            ↓
-              [Display Score & Skills]
-```
-
-### Resume Builder Flow
-
-```
-User Input                    Frontend                Backend
-    ↓                            ↓                        ↓
-Fill Form Fields         [Multi-Step Form]
-    ↓
-Live Preview            [ResumeBuilder.js]
-    ↓                        (No API Call)
-Update in Real-time     [Local State Only]
-    ↓
-Click Download PDF          [html2pdf.js]    [No Backend Needed]
-    ↓
-Generate PDF            [Client-Side Only]
-    ↓
-Download to Device            ↓
-                    (Direct File Download)
-```
-
----
-
-## Components & Data Processing
-
-### Frontend Components Structure
-
-```
-App.js (Main Router)
-├── ResumeBuilderLanding (Landing Page)
-├── ResumeBuilder
-│   ├── InputField (Reusable Input)
-│   ├── ArrayField (Dynamic Lists)
-│   ├── SectionHeader (Section Titles)
-│   └── ResumePreview (Live Display)
-├── Analysis Results Container
-│   ├── Score Gauge (Animated)
-│   ├── Skills Comparison
-│   │   ├── Matching Skills
-│   │   ├── Missing Skills
-│   │   └── Extra Skills
-│   ├── Resume Summary Tab
-│   │   ├── Contact Info
-│   │   ├── Work Experience
-│   │   ├── Projects
-│   │   └── Certifications
-│   └── Analysis Details
-│       ├── Sections Found
-│       └── Action Verbs
-```
-
-### Backend Processing Pipeline
-
-```
-Request Received
-    ↓
-Extract Text (PDF/DOCX)
-    ↓
-Text Normalization
-    ↓
-NLP Processing (spaCy)
-├── Named Entity Recognition
-├── Pattern Matching
-└── Skill Extraction
-    ↓
-Skill Normalization
-├── SKILL_MAPPING lookup
-├── COMMON_SKILLS filter
-└── Deduplication
-    ↓
-Job Description Processing
-├── Relevant section extraction
-├── Skill extraction
-└── Filtering
-    ↓
-Analysis & Comparison
-├── Matching skills calculation
-├── Missing skills calculation
-├── Score computation
-└── Semantic similarity (if applicable)
-    ↓
-Resume Information Extraction
-├── Contact details parsing
-├── Section identification
-├── Action verb detection
-└── Tech stack identification
-    ↓
-Response Construction
-├── JSON serialization
-└── Error handling
-    ↓
-Send to Frontend
+                    [ React Frontend ]
+                    (localhost:3000)
+                            |
+        ┌───────────────────┼───────────────────┐
+        |                   |                   |
+        v                   v                   v
+  [ Home Page ]      [ Analyzer ]        [ Builder ]
+        |                   |                   |
+        └───────────────────┼───────────────────┘
+                            |
+                    [ Axios HTTP ]
+                            |
+        ┌───────────────────┼───────────────────┐
+        |                   |                   |
+        v                   v                   v
+  [ /analyze ]     [ /resume_summary ]  [ /health ]
+        |                   |                   |
+        └───────────────────┼───────────────────┘
+                            |
+                    [ Flask Backend ]
+                    (localhost:5000)
+                            |
+        ┌───────────────────┼───────────────────┐
+        |                   |                   |
+        v                   v                   v
+  [ File Parser ]    [ NLP Pipeline ]    [ Data Extract ]
+  - PyPDF2           - spaCy NER         - Contact Info
+  - python-docx      - Pattern Match     - Sections
+                     - Normalize         - Action Verbs
+                            |
+                            v
+                    [ Results JSON ]
+                            |
+                    [ Frontend Display ]
 ```
 
 ---
