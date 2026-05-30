@@ -1,10 +1,5 @@
 # ATS Resume Checker & Builder
 
-A comprehensive web application designed to help job seekers optimize their resumes for Applicant Tracking Systems (ATS) and create professional, ATS-compliant resumes from scratch.
-
-**Live Application:** https://ats-resume-checker-zoit.vercel.app/
-
----
 
 ## Project Overview
 
@@ -23,7 +18,8 @@ The project uses modern web technologies with React.js on the frontend and Pytho
 - Extracts structured resume information (contact details, experience, projects, certifications)
 - Builds ATS-compliant resumes with live preview functionality
 - Exports resumes directly to PDF format
-
+  
+**Live Application:** https://ats-resume-checker-zoit.vercel.app/
 ---
 
 ## System Architecture
